@@ -19,7 +19,7 @@ namespace LeanBatchLauncher.Launcher
 		public Configuration()
 		{
 			ParameterRanges = new Dictionary<string, IEnumerable<double>>();
-			Dates = new List<DateTime>();
+			//Dates = new List<DateTime>();
 		}
 
 		/// <summary>
@@ -117,7 +117,7 @@ namespace LeanBatchLauncher.Launcher
 		/// Generate Dates from the provided StartDate and Duration.
 		/// </summary>
 		/// <returns>A copy of itself to faciliate chaining.</returns>
-		public Configuration GenerateDates()
+		/*public Configuration GenerateDates()
 		{
 
 			DateTime date = DateTime.Parse( StartDate );
@@ -130,7 +130,7 @@ namespace LeanBatchLauncher.Launcher
 			} while ( date.AddMonths( Duration ) <= DateTime.Now );
 
 			return this;
-		}
+		}*/
 
 		/// <summary>
 		/// Gets or sets the path to the folder containing the QuantConnect library.
@@ -167,7 +167,17 @@ namespace LeanBatchLauncher.Launcher
 		/// <summary>
 		/// Gets or sets the starting date of the backtest batch.
 		/// </summary>
-		public string StartDate
+		public DateTime StartDate
+		{
+			get; set;
+		}
+
+
+		/// <summary>
+		/// Gets or sets the ending date of the backtest batch
+		/// </summary>
+		/// <remarks>The range {StartDate, Today} will be chopped up in x slices, each of length Duration.</remarks>
+		public DateTime EndDate
 		{
 			get; set;
 		}
@@ -176,10 +186,10 @@ namespace LeanBatchLauncher.Launcher
 		/// Gets or sets number of months to run each backtest for.
 		/// </summary>
 		/// <remarks>The range {StartDate, Today} will be chopped up in x slices, each of length Duration.</remarks>
-		public int Duration
+		/*public int Duration
 		{
 			get; set;
-		}
+		}*/
 
 		/// <summary>
 		/// Gets or sets the alpha models (as `Names`) to run the algorithm over.
@@ -254,9 +264,9 @@ namespace LeanBatchLauncher.Launcher
 		/// <summary>
 		/// Gets a list of all starting dates to be used for backtests.
 		/// </summary>
-		public List<DateTime> Dates
+		/*public List<DateTime> Dates
 		{
 			get;
-		}
+		}*/
 	}
 }

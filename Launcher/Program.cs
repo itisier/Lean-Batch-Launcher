@@ -51,37 +51,39 @@ namespace LeanBatchLauncher.Launcher
 			}
 
 			// Generate list of dates
-			userConfiguration.GenerateDates();
+			//userConfiguration.GenerateDates();
 
 			// We need to first store each instance context in order to then run a `Parallel.ForEach()` on all of them
 			var instanceContexts = new List<InstanceContext>();
 
 			// Loop over start dates, alpha models + parameters, symbols, minute resolutions and eventually all parameter combinations
-			foreach ( var startDate in userConfiguration.Dates ) {
-				foreach ( string alphaModelName in userConfiguration.AlphaModelNames ) {
-					foreach ( string symbol in userConfiguration.Symbols ) {
-						foreach ( int minuteResolution in userConfiguration.MinuteResolutions ) {
-							foreach ( var parameterCombination in userConfiguration.GenerateParameterCombinations( userConfiguration.ParameterRanges, new Dictionary<string, double>() ) ) {
+			//foreach ( var startDate in userConfiguration.Dates ) {
+			foreach ( string alphaModelName in userConfiguration.AlphaModelNames ) {
+				foreach ( string symbol in userConfiguration.Symbols ) {
+					foreach ( int minuteResolution in userConfiguration.MinuteResolutions ) {
+						foreach ( var parameterCombination in userConfiguration.GenerateParameterCombinations( userConfiguration.ParameterRanges, new Dictionary<string, double>() ) ) {
 
-								// Loop over each paramter provided and set it accordingly
-								foreach ( var parameter in parameterCombination )
-									userConfiguration.Parameters[parameter.Key].Current = parameter.Value;
+							// Loop over each paramter provided and set it accordingly
+							foreach ( var parameter in parameterCombination )
+								userConfiguration.Parameters[parameter.Key].Current = parameter.Value;
 
-								// Store the instance context to be looped over later
-								instanceContexts.Add( new InstanceContext()
-								{
-									StartDate = startDate < dataStartDateBySymbol[symbol] ? dataStartDateBySymbol[symbol] : startDate,
-									EndDate = startDate.AddMonths( userConfiguration.Duration ),    // We keep this at the same end date as all other symbols
-									AlphaModelName = alphaModelName,
-									Symbol = symbol,
-									MinuteResolution = minuteResolution,
-									ParametersSerialized = JsonConvert.SerializeObject( userConfiguration.Parameters )
-								} );
-							}
+							// Store the instance context to be looped over later
+							instanceContexts.Add( new InstanceContext()
+							{
+								//StartDate = startDate < dataStartDateBySymbol[symbol] ? dataStartDateBySymbol[symbol] : startDate,
+								StartDate = userConfiguration.StartDate,
+								//EndDate = startDate.AddMonths( userConfiguration.Duration ),    // We keep this at the same end date as all other symbols
+								EndDate = userConfiguration.EndDate,
+								AlphaModelName = alphaModelName,
+								Symbol = symbol,
+								MinuteResolution = minuteResolution,
+								ParametersSerialized = JsonConvert.SerializeObject( userConfiguration.Parameters )
+							} );
 						}
 					}
 				}
 			}
+			//}
 
 			Console.WriteLine( "Launching {0} threads at a time. Total of {1} backtests.", Math.Min( userConfiguration.ParallelProcesses, instanceContexts.Count ), instanceContexts.Count );
 
@@ -98,7 +100,9 @@ namespace LeanBatchLauncher.Launcher
 				{
 					CreateNoWindow = false,
 					UseShellExecute = false,
-					FileName = Path.Combine( AppDomain.CurrentDomain.BaseDirectory, "Instance.exe" )
+					FileName = Path.Combine("c:\\Projects\\QuantConnect\\Lean\\Launcher\\bin\\Debug\\", "Instance.exe" ),
+					WorkingDirectory = "c:\\Projects\\QuantConnect\\Lean\\Launcher\\bin\\Debug\\",
+					
 				};
 
 				// Create arguments

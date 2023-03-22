@@ -61,20 +61,21 @@ namespace LeanBatchLauncher.Instance
 		public static void Run( string libraryPath, string apiJobUserId, string apiAccessToken, DateTime startDate, DateTime endDate, string alphaModelName, string symbol, int minuteResolution, string parametersSerialized )
 		{
 
+			//System.Diagnostics.Debugger.Launch();
+			System.Diagnostics.Debugger.Break();
 			// Initiate a thread safe operation, as it seems we need to do all of the below in a thread safe manner
 			ThreadSafe.Execute( "config", () =>
 			{
-
-				// Copy the config file thread safely
-				File.Copy( Path.Combine( libraryPath, "Launcher/config.json" ), Path.Combine( AppDomain.CurrentDomain.BaseDirectory, "config.json" ), true );
+                // Copy the config file thread safely
+                File.Copy( Path.Combine( libraryPath, "Launcher/config.json" ), Path.Combine( AppDomain.CurrentDomain.BaseDirectory, "config.json" ), true );
 
 				Config.SetConfigurationFile( Path.Combine( AppDomain.CurrentDomain.BaseDirectory, "config.json" ) );
 				Config.Reset();
 
 				// Configure path to and name of algorithm
-				Config.Set( "algorithm-type-name", "BasicTemplateFrameworkAlgorithm" );
-				Config.Set( "algorithm-location", "Algorithm.dll" );
-
+				Config.Set( "algorithm-type-name", "BasicQuantBookTemplate2_algorithm2");
+				Config.Set( "algorithm-location", "c:\\Projects\\QuantConnect\\Lean\\Launcher\\bin\\Debug\\BasicQuantBookTemplate2_algorithm2.py");
+				//Config.Set("plugin-directory", "c:\\Projects\\QuantConnect\\Lean-Batch-Launcher\\Launcher\\bin\\Debug");
 				// Set some values local to this Launcher
 				Config.Set( "environment", "backtesting" );
 				Config.Set( "data-folder", Path.Combine( libraryPath, "Data/" ) );
@@ -111,6 +112,8 @@ namespace LeanBatchLauncher.Instance
 
 			// We only need console output - no logging
 			using ( Log.LogHandler = new ConsoleLogHandler() ) {
+
+				//AppDomain.CurrentDomain.SetData("APPBASE", "c:\\Projects\\QuantConnect\\Lean\\Launcher\\bin\\Debug\\");
 
 				Log.Trace( "Engine.Main(): LEAN ALGORITHMIC TRADING ENGINE v" + Globals.Version + " Mode: *CUSTOM BATCH* (" + ( Environment.Is64BitProcess ? "64" : "32" ) + "bit)" );
 				Log.Trace( "Engine.Main(): Started " + DateTime.Now.ToShortTimeString() );
