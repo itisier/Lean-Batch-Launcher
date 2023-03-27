@@ -64,8 +64,8 @@ namespace Instance
                 //Config.Reset();
 
                 // Configure path to and name of algorithm
-                Config.Set("algorithm-type-name", "BasicQuantBookTemplate2_algorithm3_FASTBACKTEST");
-                Config.Set("algorithm-location", "c:\\Projects\\QuantConnect\\BQBT\\BasicQuantBookTemplate2_algorithm3_FASTBACKTEST.py");
+                Config.Set("algorithm-type-name", "BasicQuantBookTemplate2_algorithm3_FASTBACKTEST2");
+                Config.Set("algorithm-location", "c:\\Projects\\QuantConnect\\BQBT\\BasicQuantBookTemplate2_algorithm3_FASTBACKTEST2.py");
                 //Config.Set("plugin-directory", "c:\\Projects\\QuantConnect\\Lean-Batch-Launcher\\Launcher\\bin\\Debug");
                 // Set some values local to this Launcher
                 Config.Set("algorithm-language", "Python");

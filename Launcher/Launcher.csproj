@@ -21,7 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\QuantConnect.BatchLauncherJobQueue\QuantConnect.BatchLauncherJobQueue.csproj" />
+    <ProjectReference Include="..\Instance\Instance.csproj" />
+    <ProjectReference Include="..\ProcCtrlC\ProcCtrlC.csproj" />
     <ProjectReference Include="..\Util\Util.csproj" />
   </ItemGroup>
 

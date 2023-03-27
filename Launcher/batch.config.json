@@ -1,5 +1,5 @@
 {
-	"LibraryPath": "c:\\Projects\\QuantConnect\\Lean\\",
+	"LibraryPath": "c:\\Projects\\LeanData\\",
 
 	"ApiJobUserId": "117109",
 
@@ -7,9 +7,9 @@
 
 	"ParallelProcesses": 10,
 
-	"StartDate": "2020.08.28",
+	"StartDate": "2021-02-01",
 
-	"EndDate": "2020.09.05",
+	"EndDate": "2021-03-01",
 
 	//"Duration": 12,
 

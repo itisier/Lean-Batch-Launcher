@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static LeanBatchLauncher.Launcher.Configuration;
 using static CommandLineEncoder.Utils;
+using LeanBatchLauncher.Launcher.Tasks;
 
 namespace LeanBatchLauncher.Launcher
 {
@@ -28,7 +29,7 @@ namespace LeanBatchLauncher.Launcher
             var userConfiguration = JsonConvert.DeserializeObject<Configuration>(File.ReadAllText("batch.config.json"));
 
             // Read and parse the data start dates for each symbol
-            var dataStartDateBySymbol = JsonConvert.DeserializeObject<Dictionary<string, DateTime>>(File.ReadAllText("data-start-date-by-symbol.json"));
+            //var dataStartDateBySymbol = JsonConvert.DeserializeObject<Dictionary<string, DateTime>>(File.ReadAllText("data-start-date-by-symbol.json"));
 
             // If no alphas are provided, we must give one
             if (userConfiguration.AlphaModelNames.Length == 0)
@@ -87,44 +88,19 @@ namespace LeanBatchLauncher.Launcher
 
             // Shuffle instances
             var rng = new Random();
-            instanceContexts = instanceContexts.OrderBy(r => rng.Next()).ToList();
+            instanceContexts = instanceContexts.OrderBy(r => rng.Next()).Take(2).ToList();
 
             // Run each instance in parallel
+            
             Parallel.ForEach(instanceContexts, new ParallelOptions { MaxDegreeOfParallelism = userConfiguration.ParallelProcesses }, (context) =>
             {
-
-                // Use ProcessStartInfo class.
-                ProcessStartInfo startInfo = new ProcessStartInfo
-                {
-                    CreateNoWindow = false,
-                    UseShellExecute = false,
-                    FileName = Path.Combine("c:\\Projects\\QuantConnect\\Lean\\Launcher\\bin\\Debug\\", "Instance.exe"),
-                    WorkingDirectory = "c:\\Projects\\QuantConnect\\Lean\\Launcher\\bin\\Debug\\",
-
-                };
-
-                // Create arguments
-                var builder = new StringBuilder();
-                builder.Append(String.Format("\"{0}\" ", EncodeArgText(userConfiguration.LibraryPath)));
-                builder.Append(String.Format("\"{0}\" ", EncodeArgText(userConfiguration.ApiJobUserId)));
-                builder.Append(String.Format("\"{0}\" ", EncodeArgText(userConfiguration.ApiAccessToken)));
-                builder.Append(String.Format("\"{0}\" ", EncodeArgText(context.StartDate.ToString("yyyy-MM-dd"))));
-                builder.Append(String.Format("\"{0}\" ", EncodeArgText(context.EndDate.ToString("yyyy-MM-dd"))));
-                builder.Append(String.Format("\"{0}\" ", EncodeArgText(context.AlphaModelName)));
-                builder.Append(String.Format("\"{0}\" ", EncodeArgText(context.Symbol)));
-                builder.Append(String.Format("\"{0}\" ", EncodeArgText(context.MinuteResolution.ToString())));
-                builder.Append(String.Format("\"{0}\" ", EncodeArgText(context.ParametersSerialized)));
-
-                // Append to StartInfo
-                startInfo.Arguments = builder.ToString();
-
-                // Start the process with the info we specified
-                using (Process exeProcess = Process.Start(startInfo))
-                {
-
-                    // Proceeed when process is finished
-                    exeProcess.WaitForExit();
-                }
+                //InstanceTask.Start(userConfiguration, context);
+                int port = OrderHandlerServiceTask.NextPort();
+                var ohsProcess = OrderHandlerServiceTask.Start(userConfiguration, context, port);
+                InstanceTask.Start(userConfiguration, context);
+                OrderHandlerServiceTask.CtrlC(ohsProcess);
+                OrderHandlerServiceTask.ReleasePort(port);
+                Console.WriteLine("Done");
             });
 
             // Exit and close

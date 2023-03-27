@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuantConnect.Messaging", ".
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuantConnect.AlgorithmFactory", "..\Lean\AlgorithmFactory\QuantConnect.AlgorithmFactory.csproj", "{968D2E87-D438-4632-A5E8-DCE2AEEEC5D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcCtrlC", "ProcCtrlC\ProcCtrlC.csproj", "{51B8FFB5-B17D-43AC-B5E5-79151A40D062}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		AlgorithmAndFHBrokerOnly|Any CPU = AlgorithmAndFHBrokerOnly|Any CPU
@@ -279,6 +281,30 @@ Global
 		{968D2E87-D438-4632-A5E8-DCE2AEEEC5D9}.Release|x64.Build.0 = Release|Any CPU
 		{968D2E87-D438-4632-A5E8-DCE2AEEEC5D9}.Release|x86.ActiveCfg = Release|Any CPU
 		{968D2E87-D438-4632-A5E8-DCE2AEEEC5D9}.Release|x86.Build.0 = Release|Any CPU
+		{51B8FFB5-B17D-43AC-B5E5-79151A40D062}.AlgorithmAndFHBrokerOnly|Any CPU.ActiveCfg = Debug|Any CPU
+		{51B8FFB5-B17D-43AC-B5E5-79151A40D062}.AlgorithmAndFHBrokerOnly|Any CPU.Build.0 = Debug|Any CPU
+		{51B8FFB5-B17D-43AC-B5E5-79151A40D062}.AlgorithmAndFHBrokerOnly|x64.ActiveCfg = Debug|Any CPU
+		{51B8FFB5-B17D-43AC-B5E5-79151A40D062}.AlgorithmAndFHBrokerOnly|x64.Build.0 = Debug|Any CPU
+		{51B8FFB5-B17D-43AC-B5E5-79151A40D062}.AlgorithmAndFHBrokerOnly|x86.ActiveCfg = Debug|Any CPU
+		{51B8FFB5-B17D-43AC-B5E5-79151A40D062}.AlgorithmAndFHBrokerOnly|x86.Build.0 = Debug|Any CPU
+		{51B8FFB5-B17D-43AC-B5E5-79151A40D062}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51B8FFB5-B17D-43AC-B5E5-79151A40D062}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51B8FFB5-B17D-43AC-B5E5-79151A40D062}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{51B8FFB5-B17D-43AC-B5E5-79151A40D062}.Debug|x64.Build.0 = Debug|Any CPU
+		{51B8FFB5-B17D-43AC-B5E5-79151A40D062}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{51B8FFB5-B17D-43AC-B5E5-79151A40D062}.Debug|x86.Build.0 = Debug|Any CPU
+		{51B8FFB5-B17D-43AC-B5E5-79151A40D062}.Mono|Any CPU.ActiveCfg = Debug|Any CPU
+		{51B8FFB5-B17D-43AC-B5E5-79151A40D062}.Mono|Any CPU.Build.0 = Debug|Any CPU
+		{51B8FFB5-B17D-43AC-B5E5-79151A40D062}.Mono|x64.ActiveCfg = Debug|Any CPU
+		{51B8FFB5-B17D-43AC-B5E5-79151A40D062}.Mono|x64.Build.0 = Debug|Any CPU
+		{51B8FFB5-B17D-43AC-B5E5-79151A40D062}.Mono|x86.ActiveCfg = Debug|Any CPU
+		{51B8FFB5-B17D-43AC-B5E5-79151A40D062}.Mono|x86.Build.0 = Debug|Any CPU
+		{51B8FFB5-B17D-43AC-B5E5-79151A40D062}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51B8FFB5-B17D-43AC-B5E5-79151A40D062}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51B8FFB5-B17D-43AC-B5E5-79151A40D062}.Release|x64.ActiveCfg = Release|Any CPU
+		{51B8FFB5-B17D-43AC-B5E5-79151A40D062}.Release|x64.Build.0 = Release|Any CPU
+		{51B8FFB5-B17D-43AC-B5E5-79151A40D062}.Release|x86.ActiveCfg = Release|Any CPU
+		{51B8FFB5-B17D-43AC-B5E5-79151A40D062}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
