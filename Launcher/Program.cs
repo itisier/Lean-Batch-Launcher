@@ -84,11 +84,12 @@ namespace LeanBatchLauncher.Launcher
             }
             //}
 
-            Console.WriteLine("Launching {0} threads at a time. Total of {1} backtests.", Math.Min(userConfiguration.ParallelProcesses, instanceContexts.Count), instanceContexts.Count);
 
             // Shuffle instances
             var rng = new Random();
-            instanceContexts = instanceContexts.OrderBy(r => rng.Next()).Take(9).ToList();
+            instanceContexts = instanceContexts.OrderBy(r => rng.Next()).Take(1).ToList();
+
+            Console.WriteLine("Launching {0} threads at a time. Total of {1} backtests.", Math.Min(userConfiguration.ParallelProcesses, instanceContexts.Count), instanceContexts.Count);
 
             // Run each instance in parallel
 
@@ -99,7 +100,7 @@ namespace LeanBatchLauncher.Launcher
                     //InstanceTask.Start(userConfiguration, context);
                     int port = OrderHandlerServiceTask.NextPort();
                     var ohsProcess = OrderHandlerServiceTask.Start(userConfiguration, context, port);
-                    InstanceTask.Start(userConfiguration, context);
+                    InstanceTaskStdInput.Start(userConfiguration, context);
                     OrderHandlerServiceTask.CtrlC(ohsProcess);
                     OrderHandlerServiceTask.ReleasePort(port);
                     Console.WriteLine("Done");
@@ -114,6 +115,7 @@ namespace LeanBatchLauncher.Launcher
 
             // Exit and close
             watch.Stop();
+            Console.WriteLine("SUCCESS");
             Console.WriteLine(string.Format("Execution time: {0:0.0} minutes (total), {1:0.0} minute(s) (per backtest)", watch.ElapsedMilliseconds / 1000.0 / 60.0, watch.ElapsedMilliseconds / 1000.0 / 60.0 / instanceContexts.Count));
             Console.WriteLine("Waiting for key press...");
             Console.Read();

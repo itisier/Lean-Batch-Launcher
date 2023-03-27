@@ -122,7 +122,7 @@ namespace LeanBatchLauncher.Launcher.Tasks
             SetConsoleCtrlHandler(null, false);
 
             //var result = procToKill.CloseMainWindow();
-            if (procToKill.WaitForExit(5000) == false)
+            if (procToKill.WaitForExit(15000) == false)
                 throw new Exception($"Error waiting for process {procToKill.ProcessName} pid: {procToKill.Id} to exit");
             if (procToKill.ExitCode != 0) throw new Exception($"Exit code {procToKill.ExitCode} retuned from process to kill");
         }
