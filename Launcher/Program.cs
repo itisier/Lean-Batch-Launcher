@@ -88,20 +88,29 @@ namespace LeanBatchLauncher.Launcher
 
             // Shuffle instances
             var rng = new Random();
-            instanceContexts = instanceContexts.OrderBy(r => rng.Next()).Take(2).ToList();
+            instanceContexts = instanceContexts.OrderBy(r => rng.Next()).Take(9).ToList();
 
             // Run each instance in parallel
-            
-            Parallel.ForEach(instanceContexts, new ParallelOptions { MaxDegreeOfParallelism = userConfiguration.ParallelProcesses }, (context) =>
+
+            try
             {
-                //InstanceTask.Start(userConfiguration, context);
-                int port = OrderHandlerServiceTask.NextPort();
-                var ohsProcess = OrderHandlerServiceTask.Start(userConfiguration, context, port);
-                InstanceTask.Start(userConfiguration, context);
-                OrderHandlerServiceTask.CtrlC(ohsProcess);
-                OrderHandlerServiceTask.ReleasePort(port);
-                Console.WriteLine("Done");
-            });
+                Parallel.ForEach(instanceContexts, new ParallelOptions { MaxDegreeOfParallelism = userConfiguration.ParallelProcesses }, (context) =>
+                {
+                    //InstanceTask.Start(userConfiguration, context);
+                    int port = OrderHandlerServiceTask.NextPort();
+                    var ohsProcess = OrderHandlerServiceTask.Start(userConfiguration, context, port);
+                    InstanceTask.Start(userConfiguration, context);
+                    OrderHandlerServiceTask.CtrlC(ohsProcess);
+                    OrderHandlerServiceTask.ReleasePort(port);
+                    Console.WriteLine("Done");
+                });
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine($"error {e.Message}");
+                Environment.Exit(-1);
+            }
 
             // Exit and close
             watch.Stop();

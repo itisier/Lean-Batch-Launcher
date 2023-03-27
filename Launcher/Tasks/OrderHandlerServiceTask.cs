@@ -10,8 +10,8 @@ using System.IO;
 using System.Net.Sockets;
 using System.Net;
 using System.Net.NetworkInformation;
-
-
+using System.Threading;
+using System.Runtime.InteropServices;
 
 namespace LeanBatchLauncher.Launcher.Tasks
 {
@@ -19,6 +19,20 @@ namespace LeanBatchLauncher.Launcher.Tasks
 
     internal class OrderHandlerServiceTask
     {
+        internal const int CTRL_C_EVENT = 0;
+        [DllImport("kernel32.dll")]
+        internal static extern bool GenerateConsoleCtrlEvent(uint dwCtrlEvent, uint dwProcessGroupId);
+        [DllImport("kernel32.dll", SetLastError = true)]
+        internal static extern bool AttachConsole(uint dwProcessId);
+        [DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
+        internal static extern bool FreeConsole();
+        [DllImport("kernel32.dll")]
+        static extern bool SetConsoleCtrlHandler(ConsoleCtrlDelegate HandlerRoutine, bool Add);
+        // Delegate type to be used as the Handler Routine for SCCH
+        delegate Boolean ConsoleCtrlDelegate(uint CtrlType);
+
+
+
         private static object lockObj = new object();
         private static HashSet<int> usedPorts = new HashSet<int>();
 
@@ -87,7 +101,7 @@ namespace LeanBatchLauncher.Launcher.Tasks
 
 
 
-        internal static void CtrlC(Process p)
+        internal static void CtrlC(Process procToKill)
         {
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
@@ -98,16 +112,19 @@ namespace LeanBatchLauncher.Launcher.Tasks
                 WorkingDirectory = System.AppDomain.CurrentDomain.BaseDirectory,
             };
 
-            startInfo.Arguments = p.Id.ToString();
+            startInfo.Arguments = procToKill.Id.ToString();
 
-            using (Process exeProcess = Process.Start(startInfo))
+            SetConsoleCtrlHandler(null, true);
+            using (Process killerProcess = Process.Start(startInfo))
             {
-
-                // Proceeed when process is finished
-                exeProcess.WaitForExit();
+                killerProcess.WaitForExit();
             }
-            p.WaitForExit();
+            SetConsoleCtrlHandler(null, false);
 
+            //var result = procToKill.CloseMainWindow();
+            if (procToKill.WaitForExit(5000) == false)
+                throw new Exception($"Error waiting for process {procToKill.ProcessName} pid: {procToKill.Id} to exit");
+            if (procToKill.ExitCode != 0) throw new Exception($"Exit code {procToKill.ExitCode} retuned from process to kill");
         }
 
 
@@ -138,7 +155,7 @@ namespace LeanBatchLauncher.Launcher.Tasks
             Process exeProcess = Process.Start(startInfo);
 
                 // Proceeed when process is finished
-                //exeProcess.WaitForExit();
+                //killerProcess.WaitForExit();
             return exeProcess;
         }
     }
