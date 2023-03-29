@@ -32,9 +32,15 @@ namespace LeanBatchLauncher.Launcher.Tasks
         delegate Boolean ConsoleCtrlDelegate(uint CtrlType);
 
 
+        public OrderHandlerServiceTask()
+        {
+            port = OrderHandlerServiceTask.NextPort();
+        }
 
         private static object lockObj = new object();
         private static HashSet<int> usedPorts = new HashSet<int>();
+
+        private int port = -1;
 
         private static int GetAnyAvailablePort(IPAddress ip)
         {
@@ -70,7 +76,7 @@ namespace LeanBatchLauncher.Launcher.Tasks
         }
 
 
-        internal static int NextPort()
+        private static int NextPort()
         {
             lock(lockObj)
             {
@@ -90,7 +96,7 @@ namespace LeanBatchLauncher.Launcher.Tasks
             }
         }
 
-        internal static void ReleasePort(int port)
+        private void ReleasePort()
         {
             lock (lockObj)
             {
@@ -101,7 +107,7 @@ namespace LeanBatchLauncher.Launcher.Tasks
 
 
 
-        internal static void CtrlC(Process procToKill)
+        internal void CtrlC(Process procToKill)
         {
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
@@ -125,22 +131,27 @@ namespace LeanBatchLauncher.Launcher.Tasks
             if (procToKill.WaitForExit(15000) == false)
                 throw new Exception($"Error waiting for process {procToKill.ProcessName} pid: {procToKill.Id} to exit");
             if (procToKill.ExitCode != 0) throw new Exception($"Exit code {procToKill.ExitCode} retuned from process to kill");
+
+            ReleasePort();
         }
 
 
-        internal static Process Start(Configuration userConfiguration, InstanceContext context, int port)
+        internal Process Start(Configuration userConfiguration, object context)
         {
             // Use ProcessStartInfo class.
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
                 CreateNoWindow = false,
-                UseShellExecute = false,
+                UseShellExecute = true,
+                WindowStyle = ProcessWindowStyle.Normal,
                 //FileName = Path.Combine("c:\\Projects\\QuantConnect\\Lean\\Launcher\\bin\\Debug\\", "Instance.exe"),
                 FileName = "dotnet.exe",
                 //WorkingDirectory = "c:\\Projects\\QuantConnect\\Lean\\Launcher\\bin\\Debug\\",
                 WorkingDirectory = "\\Projects\\Bors2020\\QCService\\bin\\Backtesting_Parallel\\net6.0\\publish",
 
             };
+
+            ((Params_Algo3FastBackTest.Params)context).bors2020OrderHandlerServiceBaseUrl = $"http://localhost:{port}";
 
             // Create arguments
             var builder = new StringBuilder();

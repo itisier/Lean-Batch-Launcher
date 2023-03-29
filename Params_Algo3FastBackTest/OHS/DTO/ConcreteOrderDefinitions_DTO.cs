@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Params_Algo3FastBackTest.OHS.DTO
 {
-    public record ConcreteOrderDefinitions_DTO(LinearSL_DTO? LinearPT, ProfitLoss_DTO? ProfitLoss)
+    public record ConcreteOrderDefinitions_DTO(ProfitLoss_DTO? ProfitLoss)
     {
     }
 }

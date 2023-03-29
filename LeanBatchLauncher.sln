@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuantConnect.AlgorithmFacto
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProcCtrlC", "ProcCtrlC\ProcCtrlC.csproj", "{51B8FFB5-B17D-43AC-B5E5-79151A40D062}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Params_Algo3FastBackTest", "Params_Algo3FastBackTest\Params_Algo3FastBackTest.csproj", "{154D920A-C8D6-4EE9-A023-C6C9A3C79BE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Params_Algo3FastBackTest", "Params_Algo3FastBackTest\Params_Algo3FastBackTest.csproj", "{154D920A-C8D6-4EE9-A023-C6C9A3C79BE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parameters", "Parameters\Parameters.csproj", "{17FED382-8B56-42D6-A970-8826BC4E9EEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -406,6 +408,36 @@ Global
 		{154D920A-C8D6-4EE9-A023-C6C9A3C79BE6}.Release|x64.Build.0 = Release|Any CPU
 		{154D920A-C8D6-4EE9-A023-C6C9A3C79BE6}.Release|x86.ActiveCfg = Release|Any CPU
 		{154D920A-C8D6-4EE9-A023-C6C9A3C79BE6}.Release|x86.Build.0 = Release|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.AlgorithmAndFHBrokerOnly|Any CPU.ActiveCfg = Debug|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.AlgorithmAndFHBrokerOnly|Any CPU.Build.0 = Debug|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.AlgorithmAndFHBrokerOnly|x64.ActiveCfg = Debug|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.AlgorithmAndFHBrokerOnly|x64.Build.0 = Debug|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.AlgorithmAndFHBrokerOnly|x86.ActiveCfg = Debug|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.AlgorithmAndFHBrokerOnly|x86.Build.0 = Debug|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.Backtesting_Parallel|Any CPU.ActiveCfg = Debug|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.Backtesting_Parallel|Any CPU.Build.0 = Debug|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.Backtesting_Parallel|x64.ActiveCfg = Debug|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.Backtesting_Parallel|x64.Build.0 = Debug|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.Backtesting_Parallel|x86.ActiveCfg = Debug|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.Backtesting_Parallel|x86.Build.0 = Debug|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.Debug|x64.Build.0 = Debug|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.Debug|x86.Build.0 = Debug|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.Mono|Any CPU.ActiveCfg = Debug|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.Mono|Any CPU.Build.0 = Debug|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.Mono|x64.ActiveCfg = Debug|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.Mono|x64.Build.0 = Debug|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.Mono|x86.ActiveCfg = Debug|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.Mono|x86.Build.0 = Debug|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.Release|x64.ActiveCfg = Release|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.Release|x64.Build.0 = Release|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.Release|x86.ActiveCfg = Release|Any CPU
+		{17FED382-8B56-42D6-A970-8826BC4E9EEA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

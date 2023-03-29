@@ -49,11 +49,11 @@ namespace LeanBatchLauncher.Launcher
             //userConfiguration.GenerateDates();
 
             // We need to first store each instance context in order to then run a `Parallel.ForEach()` on all of them
-            var instanceContexts = new List<InstanceContext>();
+            var instanceContexts = new List<object>();
 
             // Loop over start dates, alpha models + parameters, symbols, minute resolutions and eventually all parameter combinations
             //foreach ( var startDate in userConfiguration.Dates ) {
-            foreach (string alphaModelName in userConfiguration.AlphaModelNames)
+            /*foreach (string alphaModelName in userConfiguration.AlphaModelNames)
             {
                 foreach (string symbol in userConfiguration.Symbols)
                 {
@@ -81,13 +81,16 @@ namespace LeanBatchLauncher.Launcher
                         }
                     }
                 }
+            }*/
+            foreach(var parameter in Params_Algo3FastBackTest.Combinator.GetCombinations("test", 399, 3078, 22))
+            {
+                instanceContexts.Add(parameter);
             }
-            //}
 
 
             // Shuffle instances
             var rng = new Random();
-            instanceContexts = instanceContexts.OrderBy(r => rng.Next()).Take(1).ToList();
+            instanceContexts = instanceContexts.OrderBy(r => rng.Next()).Take(600).ToList();
 
             Console.WriteLine("Launching {0} threads at a time. Total of {1} backtests.", Math.Min(userConfiguration.ParallelProcesses, instanceContexts.Count), instanceContexts.Count);
 
@@ -98,11 +101,10 @@ namespace LeanBatchLauncher.Launcher
                 Parallel.ForEach(instanceContexts, new ParallelOptions { MaxDegreeOfParallelism = userConfiguration.ParallelProcesses }, (context) =>
                 {
                     //InstanceTask.Start(userConfiguration, context);
-                    int port = OrderHandlerServiceTask.NextPort();
-                    var ohsProcess = OrderHandlerServiceTask.Start(userConfiguration, context, port);
+                    var oshTask = new OrderHandlerServiceTask();
+                    var ohsProcess = oshTask.Start(userConfiguration, context);
                     InstanceTaskStdInput.Start(userConfiguration, context);
-                    OrderHandlerServiceTask.CtrlC(ohsProcess);
-                    OrderHandlerServiceTask.ReleasePort(port);
+                    oshTask.CtrlC(ohsProcess);
                     Console.WriteLine("Done");
                 });
             }

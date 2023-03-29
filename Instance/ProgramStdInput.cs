@@ -11,11 +11,26 @@ using System.IO;
 using static LeanBatchLauncher.Launcher.Configuration;
 using static CommandLineEncoder.Utils;
 using System.ComponentModel.Composition;
+using Fasterflect;
+using Newtonsoft.Json.Linq;
 
 namespace Instance
 {
     internal class Program
     {
+
+        public static List<string> GetPropertyKeysForDynamic(dynamic dynamicToGetPropertiesFor)
+        {
+            JObject attributesAsJObject = dynamicToGetPropertiesFor;
+            Dictionary<string, object> values = attributesAsJObject.ToObject<Dictionary<string, object>>();
+            List<string> toReturn = new List<string>();
+            foreach (string key in values.Keys)
+            {
+                toReturn.Add(key);
+            }
+            return toReturn;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -27,21 +42,25 @@ namespace Instance
             Stream inputStream = Console.OpenStandardInput(inputBuffer.Length);
             //Console.SetIn(new StreamReader(inputStream, Console.InputEncoding, false, inputBuffer.Length));
             var reader = new StreamReader(inputStream, Console.InputEncoding, false, inputBuffer.Length);
-            Log.Trace($"HALLO FRA PorgramStdInput {reader.ReadToEnd()}");
+            var jsonParameters = reader.ReadToEnd();
+            Log.Trace($"Parameters = {jsonParameters}");
 
+            var parameters = JsonConvert.DeserializeObject<dynamic>(jsonParameters);
+            //IDictionary<string, object> parametersKVP = new Dictionary<string, object>();
+            
 
             // Initiate a thread safe operation, as it seems we need to do all of the below in a thread safe manner
             ThreadSafe.Execute("config", () =>
             {
                 // Copy the config file thread safely
-                File.Copy(Path.Combine("c:\\Projects\\QuantConnect\\Lean-Frode\\QuantConnect.Brokerages.FH\\bin\\Debug\\net5.0\\", "configb2020backtesting_FASTBACKTEST.json"), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json"), true);
+                File.Copy(Path.Combine("c:\\Projects\\QuantConnect\\Lean-Frode\\QuantConnect.Brokerages.FH\\", "configb2020backtesting_FASTBACKTEST.json"), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json"), true);
 
                 Config.SetConfigurationFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json"));
                 //Config.Reset();
 
                 // Configure path to and name of algorithm
-                Config.Set("algorithm-type-name", "BasicQuantBookTemplate2_algorithm3_FASTBACKTEST2");
-                Config.Set("algorithm-location", "c:\\Projects\\QuantConnect\\BQBT\\BasicQuantBookTemplate2_algorithm3_FASTBACKTEST2.py");
+                Config.Set("algorithm-type-name", "BasicQuantBookTemplate2_algorithm3_FASTBACKTEST");
+                Config.Set("algorithm-location", "c:\\Projects\\QuantConnect\\BQBT\\BasicQuantBookTemplate2_algorithm3_FASTBACKTEST.py");
                 //Config.Set("plugin-directory", "c:\\Projects\\QuantConnect\\Lean-Batch-Launcher\\Launcher\\bin\\Debug");
                 // Set some values local to this Launcher
                 Config.Set("algorithm-language", "Python");
@@ -53,6 +72,13 @@ namespace Instance
                 Config.Set("data-provider", "QuantConnect.Lean.Engine.DataFeeds.DefaultDataProvider");
                 //Config.Set("job-user-id", apiJobUserId);
                 //Config.Set("api-access-token", apiAccessToken);
+
+                foreach (string propertyName in GetPropertyKeysForDynamic(parameters))
+                {
+                    string propertyValue = parameters[propertyName];
+                    // And
+                    Config.Set(propertyName, propertyValue);
+                }
 
 
                 // Deserialize parameters

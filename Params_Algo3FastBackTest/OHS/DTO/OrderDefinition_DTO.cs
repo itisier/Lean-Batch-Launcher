@@ -10,7 +10,6 @@ namespace Params_Algo3FastBackTest.OHS.DTO
     public record OrderDefinition_DTO(string Name,
         MaxOrdersInPeriodClass? MaxOrdersInPeriod,
         int MLSessionId, int MLIterationId, int MLCluster,
-        int OrderCollectionId,
         ConcreteOrderDefinitions_DTO ConcreteOrderDefinitions
         )
     {
