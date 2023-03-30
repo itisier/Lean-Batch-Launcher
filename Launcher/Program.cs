@@ -91,11 +91,13 @@ namespace LeanBatchLauncher.Launcher
 
             // Shuffle instances
             var rng = new Random();
-            instanceContexts = instanceContexts.OrderBy(r => rng.Next()).Take(1).ToList();
+            instanceContexts = instanceContexts.OrderBy(r => rng.Next()).Take(2).ToList();
 
             Console.WriteLine("Launching {0} threads at a time. Total of {1} backtests.", Math.Min(userConfiguration.ParallelProcesses, instanceContexts.Count), instanceContexts.Count);
 
             // Run each instance in parallel
+            var batchIds = new System.Collections.Concurrent.ConcurrentBag<string>();
+            
 
             try
             {
@@ -106,6 +108,8 @@ namespace LeanBatchLauncher.Launcher
                     var ohsProcess = oshTask.Start(context);
                     
                     var backtestId = InstanceTaskStdInput.Start(userConfiguration, context, Guid.NewGuid());
+                    batchIds.Add(backtestId);
+                    WriteBatchIdsFile(userConfiguration.BatchIdsFile, batchIds);
                     oshTask.CtrlC(ohsProcess);
                     Console.WriteLine($"Done with {backtestId}");
                 });
@@ -125,6 +129,16 @@ namespace LeanBatchLauncher.Launcher
             Console.Read();
             Environment.Exit(0);
 
+        }
+
+
+        private static object batchidsFileLock = new object();
+        private static void WriteBatchIdsFile(string filePath, IEnumerable<string> batchIds)
+        {
+            lock(batchidsFileLock)
+            {
+                File.WriteAllText(filePath, JsonConvert.SerializeObject(batchIds));
+            }
         }
 
         /// <summary>

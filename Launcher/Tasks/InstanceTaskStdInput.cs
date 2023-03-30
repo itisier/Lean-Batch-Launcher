@@ -13,7 +13,7 @@ namespace LeanBatchLauncher.Launcher.Tasks
 {
     internal class InstanceTaskStdInput
     {
-        private record CompositeParameters(Configuration userConfiguration, object customParameters);
+        private record CompositeParameters(Configuration userConfiguration, object customParameters, string backTestId);
 
         internal static string Start(Configuration userConfiguration, object parameters, Guid uniqueId)
         {
@@ -39,8 +39,8 @@ namespace LeanBatchLauncher.Launcher.Tasks
 
                 //((Configuration)parameters).BacktestId = ((Configuration)parameters).AlgorithmTypeName+"-"+uniqueId.ToString();
 
-                userConfiguration.BacktestId = userConfiguration.AlgorithmTypeName+"-"+uniqueId.ToString();
-                var compParameters = new CompositeParameters(userConfiguration, parameters);
+                var backTestId = userConfiguration.AlgorithmTypeName+"-"+uniqueId.ToString();
+                var compParameters = new CompositeParameters(userConfiguration, parameters, backTestId);
 
                 var jsonParameters = JsonConvert.SerializeObject(compParameters);
 
@@ -51,7 +51,7 @@ namespace LeanBatchLauncher.Launcher.Tasks
                 // Proceeed when process is finished
                 exeProcess.WaitForExit();
 
-                return userConfiguration.BacktestId;
+                return backTestId;
             }
         }
     }

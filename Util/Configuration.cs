@@ -137,7 +137,6 @@ namespace LeanBatchLauncher.Launcher
 		public string Algorithmlocation { get; set; }
 
         public string AlgorithmTypeName { get; set; }
-		public string BacktestId { get; set; }
 		public string AlgorithmLanguage { get; set; }
 		public string ConfigFile { get; set; }
 
@@ -199,6 +198,9 @@ namespace LeanBatchLauncher.Launcher
 		{
 			get; set;
 		}*/
+
+		public string BatchIdsFile { get; set; }
+
 
 		/// <summary>
 		/// Gets or sets the alpha models (as `Names`) to run the algorithm over.

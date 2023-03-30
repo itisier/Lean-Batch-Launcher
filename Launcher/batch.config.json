@@ -179,8 +179,9 @@
 		"ZAL.OL"
 	],
 
-	"Parameters": {
+	"BatchIdsFile" :  "c:\\temp\\batchids.json",
 
+	"Parameters": {
 		/*
 		"LBL-ema-fast": {
 			"Start": 10,
@@ -194,4 +195,5 @@
 			"Step": 10
 		}*/
 	}
+
 }

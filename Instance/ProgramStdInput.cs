@@ -54,6 +54,8 @@ namespace Instance
             Log.Trace($"customparameters = {customparameters}");
             var userConfiguration = parameters["userConfiguration"];
             Log.Trace($"userConfiguration = {userConfiguration}");
+            var backTestId = (string)parameters["backTestId"];
+            Log.Trace($"backTestId = {backTestId}");
 
             //IDictionary<string, object> parametersKVP = new Dictionary<string, object>();
 
@@ -81,7 +83,7 @@ namespace Instance
                 // Configure path to and name of algorithm
                 Config.Set("algorithm-location", userConfiguration["Algorithmlocation"]);
                 Config.Set("algorithm-type-name", userConfiguration["AlgorithmTypeName"]);
-                Config.Set("BacktestId", userConfiguration["BacktestId"]);
+                Config.Set("BacktestId", backTestId);
                 Config.Set("data-folder", userConfiguration["DataFolder"]);
 
                 //Config.Set("plugin-directory", "c:\\Projects\\QuantConnect\\Lean-Batch-Launcher\\Launcher\\bin\\Debug");
