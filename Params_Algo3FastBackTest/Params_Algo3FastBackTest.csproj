@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Parameters\Parameters.csproj" />
+    <ProjectReference Include="..\Util\Util.csproj" />
   </ItemGroup>
 
 </Project>

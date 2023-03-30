@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Text.Json.Serialization;
 using LeanBatchLauncher.Util;
+using Newtonsoft.Json;
 
 namespace LeanBatchLauncher.Launcher
 {
@@ -132,10 +133,18 @@ namespace LeanBatchLauncher.Launcher
 			return this;
 		}*/
 
+
+		public string Algorithmlocation { get; set; }
+
+        public string AlgorithmTypeName { get; set; }
+		public string BacktestId { get; set; }
+		public string AlgorithmLanguage { get; set; }
+		public string ConfigFile { get; set; }
+
 		/// <summary>
 		/// Gets or sets the path to the folder containing the QuantConnect library.
 		/// </summary>
-		public string LibraryPath
+        public string DataFolder
 		{
 			get; set;
 		}

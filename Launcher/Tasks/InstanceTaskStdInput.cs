@@ -13,7 +13,9 @@ namespace LeanBatchLauncher.Launcher.Tasks
 {
     internal class InstanceTaskStdInput
     {
-        internal static void Start(Configuration userConfiguration, object parameters)
+        private record CompositeParameters(Configuration userConfiguration, object customParameters);
+
+        internal static string Start(Configuration userConfiguration, object parameters, Guid uniqueId)
         {
             // Use ProcessStartInfo class.
             ProcessStartInfo startInfo = new ProcessStartInfo
@@ -35,7 +37,12 @@ namespace LeanBatchLauncher.Launcher.Tasks
 
                 //myStreamWriter.Write("{\r\n  \"Name\": \"test\",\r\n  \"MaxOrders\": 1,\r\n  \"Period\": \"2.00:10:00\",\r\n  \"MLSessionId\": 499,\r\n  \"MLIterationId\": 3078,\r\n  \"MLCluster\": 222,\r\n  \"ConcreteOrderDefinitions\": {\r\n    \"ProfitLoss\": {\r\n      \"ProfitPct\": 0.05,\r\n      \"SLPct\": -0.05,\r\n      \"TimeInForceTimeSpanEntry\": null,\r\n      \"TimeInForceTimeSpanProfit\": null,\r\n      \"FixedAmountToBuy\": 40000\r\n    }\r\n  }\r\n}");
 
-                var jsonParameters = JsonConvert.SerializeObject(parameters);
+                //((Configuration)parameters).BacktestId = ((Configuration)parameters).AlgorithmTypeName+"-"+uniqueId.ToString();
+
+                userConfiguration.BacktestId = userConfiguration.AlgorithmTypeName+"-"+uniqueId.ToString();
+                var compParameters = new CompositeParameters(userConfiguration, parameters);
+
+                var jsonParameters = JsonConvert.SerializeObject(compParameters);
 
                 myStreamWriter.Write(jsonParameters);
 
@@ -43,6 +50,8 @@ namespace LeanBatchLauncher.Launcher.Tasks
 
                 // Proceeed when process is finished
                 exeProcess.WaitForExit();
+
+                return userConfiguration.BacktestId;
             }
         }
     }

@@ -28,7 +28,7 @@ namespace LeanBatchLauncher.Launcher.Tasks
 
             // Create arguments
             var builder = new StringBuilder();
-            builder.Append(String.Format("\"{0}\" ", EncodeArgText(userConfiguration.LibraryPath)));
+            builder.Append(String.Format("\"{0}\" ", EncodeArgText(userConfiguration.DataFolder)));
             builder.Append(String.Format("\"{0}\" ", EncodeArgText(userConfiguration.ApiJobUserId)));
             builder.Append(String.Format("\"{0}\" ", EncodeArgText(userConfiguration.ApiAccessToken)));
             builder.Append(String.Format("\"{0}\" ", EncodeArgText(context.StartDate.ToString("yyyy-MM-dd"))));

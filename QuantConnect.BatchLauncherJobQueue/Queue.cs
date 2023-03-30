@@ -27,6 +27,7 @@ namespace LeanBatchLauncher.Launcher
         private static readonly int ProjectId = Config.GetInt("job-project-id", 0);
         private readonly string AlgorithmTypeName = Config.Get("algorithm-type-name");
         private readonly Language Language = (Language)Enum.Parse(typeof(Language), Config.Get("algorithm-language"), ignoreCase: true);
+        private readonly string BacktestId = Config.Get("BacktestId");
 
         /// <summary>
         /// Creates the queue and a parent queue.
@@ -113,7 +114,7 @@ namespace LeanBatchLauncher.Launcher
                 UserId = UserId,
                 ProjectId = ProjectId,
                 Version = Globals.Version,
-                BacktestId = AlgorithmTypeName + "-" + Guid.NewGuid(),
+                BacktestId = BacktestId, //AlgorithmTypeName + "-" + Guid.NewGuid(),
                 Language = Language.Python,
                 Parameters = parameters,
                 Controls = controls,

@@ -13,6 +13,9 @@ using static CommandLineEncoder.Utils;
 using System.ComponentModel.Composition;
 using Fasterflect;
 using Newtonsoft.Json.Linq;
+using QuantConnect.Api;
+using Accord.Diagnostics;
+using System.Diagnostics;
 
 namespace Instance
 {
@@ -46,39 +49,74 @@ namespace Instance
             Log.Trace($"Parameters = {jsonParameters}");
 
             var parameters = JsonConvert.DeserializeObject<dynamic>(jsonParameters);
+
+            var customparameters = parameters["customParameters"];
+            Log.Trace($"customparameters = {customparameters}");
+            var userConfiguration = parameters["userConfiguration"];
+            Log.Trace($"userConfiguration = {userConfiguration}");
+
             //IDictionary<string, object> parametersKVP = new Dictionary<string, object>();
-            
+
 
             // Initiate a thread safe operation, as it seems we need to do all of the below in a thread safe manner
             ThreadSafe.Execute("config", () =>
             {
                 // Copy the config file thread safely
-                File.Copy(Path.Combine("c:\\Projects\\QuantConnect\\Lean-Frode\\QuantConnect.Brokerages.FH\\", "configb2020backtesting_FASTBACKTEST.json"), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json"), true);
+                //File.Copy(Path.Combine("c:\\Projects\\QuantConnect\\Lean-Frode\\QuantConnect.Brokerages.FH\\", "configb2020backtesting_FASTBACKTEST.json"), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json"), true);
+                //Log.Trace($"ConfigFile = {userConfiguration["ConfigFile"]}");
+                //Log.Trace($"DestFile = {Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json")}");
+                File.Copy((string)userConfiguration["ConfigFile"], Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json"), true);
 
                 Config.SetConfigurationFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json"));
                 //Config.Reset();
 
+                /*Config.Set("algorithm-location", "c:\\Projects\\QuantConnect\\BQBT\\BasicQuantBookTemplate2_algorithm3_FASTBACKTEST.py");
+                var algorithmTypeName = "BasicQuantBookTemplate2_algorithm3_FASTBACKTEST";
+                var backTestGuid = Guid.NewGuid();
+                Config.Set("algorithm-type-name", algorithmTypeName);
+                var backTestId = $"{algorithmTypeName}-{backTestGuid}";
+                Config.Set("BacktestId", backTestId);*/
+
+
                 // Configure path to and name of algorithm
-                Config.Set("algorithm-type-name", "BasicQuantBookTemplate2_algorithm3_FASTBACKTEST");
-                Config.Set("algorithm-location", "c:\\Projects\\QuantConnect\\BQBT\\BasicQuantBookTemplate2_algorithm3_FASTBACKTEST.py");
+                Config.Set("algorithm-location", userConfiguration["Algorithmlocation"]);
+                Config.Set("algorithm-type-name", userConfiguration["AlgorithmTypeName"]);
+                Config.Set("BacktestId", userConfiguration["BacktestId"]);
+                Config.Set("data-folder", userConfiguration["DataFolder"]);
+
                 //Config.Set("plugin-directory", "c:\\Projects\\QuantConnect\\Lean-Batch-Launcher\\Launcher\\bin\\Debug");
                 // Set some values local to this Launcher
                 Config.Set("algorithm-language", "Python");
                 Config.Set("composer-dll-directory", ".");
                 Config.Set("environment", "backtesting");
-                Config.Set("data-folder", "c:\\Projects\\LeanData\\");
+
                 Config.Set("job-queue-handler", "LeanBatchLauncher.Launcher.Queue");
                 //Config.Set("data-provider", "QuantConnect.Lean.Engine.DataFeeds.ApiDataProvider");
                 Config.Set("data-provider", "QuantConnect.Lean.Engine.DataFeeds.DefaultDataProvider");
                 //Config.Set("job-user-id", apiJobUserId);
                 //Config.Set("api-access-token", apiAccessToken);
 
-                foreach (string propertyName in GetPropertyKeysForDynamic(parameters))
+
+                foreach (string propertyName in GetPropertyKeysForDynamic(customparameters))
                 {
-                    string propertyValue = parameters[propertyName];
-                    // And
-                    Config.Set(propertyName, propertyValue);
+                    /*object obj = customparameters[propertyName];
+                    Console.WriteLine($"{obj.GetType().FullName}");
+                    if (obj.GetType() == typeof(JValue)) {
+                        string propertyValue = customparameters[propertyName];
+                        // And
+                        Config.Set(propertyName, propertyValue);
+                    }*/
+
+                    Config.Set(propertyName, customparameters[propertyName]);
                 }
+
+
+
+
+
+
+
+
 
 
                 // Deserialize parameters

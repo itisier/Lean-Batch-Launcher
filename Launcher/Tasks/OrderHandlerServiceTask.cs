@@ -136,7 +136,7 @@ namespace LeanBatchLauncher.Launcher.Tasks
         }
 
 
-        internal Process Start(Configuration userConfiguration, object context)
+        internal Process Start(object context)
         {
             // Use ProcessStartInfo class.
             ProcessStartInfo startInfo = new ProcessStartInfo

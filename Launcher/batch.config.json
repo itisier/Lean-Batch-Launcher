@@ -1,5 +1,9 @@
 {
-	"LibraryPath": "c:\\Projects\\LeanData\\",
+	"Algorithmlocation": "c:\\Projects\\QuantConnect\\BQBT\\BasicQuantBookTemplate2_algorithm3_FASTBACKTEST.py",
+	"AlgorithmTypeName": "BasicQuantBookTemplate2_algorithm3_FASTBACKTEST",
+	"ConfigFile": "c:\\Projects\\QuantConnect\\Lean-Frode\\QuantConnect.Brokerages.FH\\configb2020backtesting_FASTBACKTEST.json",
+	"AlgorithmLanguage": "Python",
+	"DataFolder": "c:\\Projects\\LeanData\\",
 
 	"ApiJobUserId": "117109",
 
@@ -7,9 +11,10 @@
 
 	"ParallelProcesses": 6,
 
-	"StartDate": "2021-02-01",
+	"StartDate": "2021-02-03",
 
-	"EndDate": "2021-03-01",
+	//"EndDate": "2021-03-23",
+	"EndDate": "2021-02-3",
 
 	//"Duration": 12,
 

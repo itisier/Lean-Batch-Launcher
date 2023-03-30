@@ -1,4 +1,5 @@
-﻿using LeanBatchLauncher.Parameters;
+﻿using LeanBatchLauncher.Launcher;
+using LeanBatchLauncher.Parameters;
 using Newtonsoft.Json;
 using Params_Algo3FastBackTest.OHS.DTO;
 using System;
@@ -14,7 +15,7 @@ namespace Params_Algo3FastBackTest
     {
 
 
-        public static IEnumerable<Params> GetCombinations(string name, int MLSessionId, int MLIterationId, int MLCluster)
+        public static IEnumerable<Params> GetCombinations(string name, int MLSessionId, int MLIterationId, int MLCluster, Configuration userConfiguration)
         {
             
             foreach(var timeinForceEntryMinute in new FixedValueParameter<int?>(null, 1, 5, 60, 470).Values)
@@ -28,6 +29,11 @@ namespace Params_Algo3FastBackTest
                         ConcreteOrderDefinitions_DTO concreteOrder = new ConcreteOrderDefinitions_DTO(profitLoss);
                         OrderDefinition_DTO orderDefinition = new OrderDefinition_DTO(name, null, MLSessionId, MLIterationId, MLCluster, concreteOrder);
                         Params result = new(name, JsonConvert.SerializeObject(orderDefinition));
+
+                        result.backtestStartDate = new int[]{userConfiguration.StartDate.Year, userConfiguration.StartDate.Month, userConfiguration.StartDate.Day};
+                        result.backtestEndDate = new int[] {userConfiguration.EndDate.Year,userConfiguration.EndDate.Month, userConfiguration.EndDate.Day};
+
+
                         yield return result;
                     }
                 }

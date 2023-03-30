@@ -82,15 +82,16 @@ namespace LeanBatchLauncher.Launcher
                     }
                 }
             }*/
-            foreach(var parameter in Params_Algo3FastBackTest.Combinator.GetCombinations("test", 399, 3078, 22))
+            foreach(var parameter in Params_Algo3FastBackTest.Combinator.GetCombinations("test", 399, 3078, 22, userConfiguration))
             {
                 instanceContexts.Add(parameter);
+
             }
 
 
             // Shuffle instances
             var rng = new Random();
-            instanceContexts = instanceContexts.OrderBy(r => rng.Next()).Take(600).ToList();
+            instanceContexts = instanceContexts.OrderBy(r => rng.Next()).Take(1).ToList();
 
             Console.WriteLine("Launching {0} threads at a time. Total of {1} backtests.", Math.Min(userConfiguration.ParallelProcesses, instanceContexts.Count), instanceContexts.Count);
 
@@ -102,10 +103,11 @@ namespace LeanBatchLauncher.Launcher
                 {
                     //InstanceTask.Start(userConfiguration, context);
                     var oshTask = new OrderHandlerServiceTask();
-                    var ohsProcess = oshTask.Start(userConfiguration, context);
-                    InstanceTaskStdInput.Start(userConfiguration, context);
+                    var ohsProcess = oshTask.Start(context);
+                    
+                    var backtestId = InstanceTaskStdInput.Start(userConfiguration, context, Guid.NewGuid());
                     oshTask.CtrlC(ohsProcess);
-                    Console.WriteLine("Done");
+                    Console.WriteLine($"Done with {backtestId}");
                 });
             }
             catch (Exception e)
