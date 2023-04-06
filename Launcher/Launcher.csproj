@@ -24,6 +24,7 @@
     <ProjectReference Include="..\Instance\Instance.csproj" />
     <ProjectReference Include="..\Params_Algo3FastBackTest\Params_Algo3FastBackTest.csproj" />
     <ProjectReference Include="..\ProcCtrlC\ProcCtrlC.csproj" />
+    <ProjectReference Include="..\Serialization\Serialization.csproj" />
     <ProjectReference Include="..\Util\Util.csproj" />
   </ItemGroup>
 

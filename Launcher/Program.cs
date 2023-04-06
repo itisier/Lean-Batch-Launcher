@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 using static LeanBatchLauncher.Launcher.Configuration;
 using static CommandLineEncoder.Utils;
 using LeanBatchLauncher.Launcher.Tasks;
+using QuantConnect.Packets;
+using Panoptes.Model;
+using System.Threading;
 
 namespace LeanBatchLauncher.Launcher
 {
@@ -91,7 +94,7 @@ namespace LeanBatchLauncher.Launcher
 
             // Shuffle instances
             var rng = new Random();
-            instanceContexts = instanceContexts.OrderBy(r => rng.Next()).Take(2).ToList();
+            instanceContexts = instanceContexts.OrderBy(r => rng.Next()).Take(1).ToList();
 
             Console.WriteLine("Launching {0} threads at a time. Total of {1} backtests.", Math.Min(userConfiguration.ParallelProcesses, instanceContexts.Count), instanceContexts.Count);
 
@@ -109,7 +112,7 @@ namespace LeanBatchLauncher.Launcher
                     
                     var backtestId = InstanceTaskStdInput.Start(userConfiguration, context, Guid.NewGuid());
                     batchIds.Add(backtestId);
-                    WriteBatchIdsFile(userConfiguration.BatchIdsFile, batchIds);
+                    WriteBatchIdsFile(userConfiguration.BatchIdsFile, batchIds.ToList());
                     oshTask.CtrlC(ohsProcess);
                     Console.WriteLine($"Done with {backtestId}");
                 });
@@ -121,10 +124,18 @@ namespace LeanBatchLauncher.Launcher
                 Environment.Exit(-1);
             }
 
+            
+            IResultSerializer resultSerializer = new AdvancedResultSerializer(new ResultConverter(), null);
+            foreach(var batchId in batchIds)
+            { 
+                var batchResult = resultSerializer.DeserializeAsync($"{Path.Join(userConfiguration.ResultsDestinationFolder, batchId)}.json", new CancellationTokenSource().Token).Result;
+            }
+
             // Exit and close
             watch.Stop();
             Console.WriteLine("SUCCESS");
             Console.WriteLine(string.Format("Execution time: {0:0.0} minutes (total), {1:0.0} minute(s) (per backtest)", watch.ElapsedMilliseconds / 1000.0 / 60.0, watch.ElapsedMilliseconds / 1000.0 / 60.0 / instanceContexts.Count));
+            
             Console.WriteLine("Waiting for key press...");
             Console.Read();
             Environment.Exit(0);
@@ -140,6 +151,7 @@ namespace LeanBatchLauncher.Launcher
                 File.WriteAllText(filePath, JsonConvert.SerializeObject(batchIds));
             }
         }
+
 
         /// <summary>
         /// Contains one instance context to be passed into a backtest.

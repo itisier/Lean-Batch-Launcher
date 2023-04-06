@@ -85,6 +85,7 @@ namespace Instance
                 Config.Set("algorithm-type-name", userConfiguration["AlgorithmTypeName"]);
                 Config.Set("BacktestId", backTestId);
                 Config.Set("data-folder", userConfiguration["DataFolder"]);
+                Config.Set("results-destination-folder", userConfiguration["ResultsDestinationFolder"]);
 
                 //Config.Set("plugin-directory", "c:\\Projects\\QuantConnect\\Lean-Batch-Launcher\\Launcher\\bin\\Debug");
                 // Set some values local to this Launcher

@@ -41,6 +41,7 @@ namespace LeanBatchLauncher.Launcher.Tasks
 
                 var backTestId = userConfiguration.AlgorithmTypeName+"-"+uniqueId.ToString();
                 var compParameters = new CompositeParameters(userConfiguration, parameters, backTestId);
+                
 
                 var jsonParameters = JsonConvert.SerializeObject(compParameters);
 

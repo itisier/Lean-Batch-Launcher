@@ -4,6 +4,7 @@
 	"ConfigFile": "c:\\Projects\\QuantConnect\\Lean-Frode\\QuantConnect.Brokerages.FH\\configb2020backtesting_FASTBACKTEST.json",
 	"AlgorithmLanguage": "Python",
 	"DataFolder": "c:\\Projects\\LeanData\\",
+	"ResultsDestinationFolder": "c:/Projects/testpython2/FASTBACKTEST/logs/",
 
 	"ApiJobUserId": "117109",
 
@@ -179,7 +180,7 @@
 		"ZAL.OL"
 	],
 
-	"BatchIdsFile" :  "c:\\temp\\batchids.json",
+	"BatchIdsFile": "c:\\temp\\batchids.json",
 
 	"Parameters": {
 		/*

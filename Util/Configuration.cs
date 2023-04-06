@@ -140,10 +140,12 @@ namespace LeanBatchLauncher.Launcher
 		public string AlgorithmLanguage { get; set; }
 		public string ConfigFile { get; set; }
 
+		public string ResultsDestinationFolder { get; set; }
+
 		/// <summary>
 		/// Gets or sets the path to the folder containing the QuantConnect library.
 		/// </summary>
-        public string DataFolder
+		public string DataFolder
 		{
 			get; set;
 		}
