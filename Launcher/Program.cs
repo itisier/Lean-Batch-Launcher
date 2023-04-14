@@ -13,6 +13,7 @@ using LeanBatchLauncher.Launcher.Tasks;
 using QuantConnect.Packets;
 using Panoptes.Model;
 using System.Threading;
+using LeanBatchLauncher.Launcher.Export;
 
 namespace LeanBatchLauncher.Launcher
 {
@@ -94,7 +95,7 @@ namespace LeanBatchLauncher.Launcher
 
             // Shuffle instances
             var rng = new Random();
-            instanceContexts = instanceContexts.OrderBy(r => rng.Next()).Take(1).ToList();
+            instanceContexts = instanceContexts.OrderBy(r => rng.Next()).Take(2).ToList();
 
             Console.WriteLine("Launching {0} threads at a time. Total of {1} backtests.", Math.Min(userConfiguration.ParallelProcesses, instanceContexts.Count), instanceContexts.Count);
 
@@ -126,10 +127,14 @@ namespace LeanBatchLauncher.Launcher
 
             
             IResultSerializer resultSerializer = new AdvancedResultSerializer(new ResultConverter(), null);
+            List<Result> resultList = new List<Result>();
             foreach(var batchId in batchIds)
             { 
-                var batchResult = resultSerializer.DeserializeAsync($"{Path.Join(userConfiguration.ResultsDestinationFolder, batchId)}.json", new CancellationTokenSource().Token).Result;
+                Result batchResult = resultSerializer.DeserializeAsync($"{Path.Join(userConfiguration.ResultsDestinationFolder, batchId)}.json", new CancellationTokenSource().Token).Result;
+                resultList.Add(batchResult);
             }
+            ExcelExport.Export(resultList);
+
 
             // Exit and close
             watch.Stop();
