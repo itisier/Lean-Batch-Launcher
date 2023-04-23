@@ -4,7 +4,7 @@ namespace Panoptes.Model
 {
     public static class ResultUpdater
     {
-        public static void Merge(Result target, Result source)
+        public static void Merge(QCResult target, QCResult source)
         {
             MergeCharts(target, source);
             MergeOrders(target, source);
@@ -17,7 +17,7 @@ namespace Panoptes.Model
             UpdateResultType(target, source);
         }
 
-        private static void UpdateResultType(Result target, Result source)
+        private static void UpdateResultType(QCResult target, QCResult source)
         {
             if (target.ResultType == ResultType.Backtest && source.ResultType != ResultType.Backtest)
             {
@@ -25,7 +25,7 @@ namespace Panoptes.Model
             }
         }
 
-        private static void UpdateRollingWindow(Result target, Result source)
+        private static void UpdateRollingWindow(QCResult target, QCResult source)
         {
             foreach (var x in source.RollingWindow)
             {
@@ -33,7 +33,7 @@ namespace Panoptes.Model
             }
         }
 
-        private static void MergeCharts(Result target, Result source)
+        private static void MergeCharts(QCResult target, QCResult source)
         {
             // Update charts
             foreach (var sourceChart in source.Charts)
@@ -67,7 +67,7 @@ namespace Panoptes.Model
             }
         }
 
-        private static void MergeOrders(Result target, Result source)
+        private static void MergeOrders(QCResult target, QCResult source)
         {
             foreach (var order in source.Orders)
             {
@@ -80,7 +80,7 @@ namespace Panoptes.Model
             }
         }
 
-        private static void MergeStatistics(Result target, Result source)
+        private static void MergeStatistics(QCResult target, QCResult source)
         {
             foreach (var x in source.Statistics)
             {
@@ -93,7 +93,7 @@ namespace Panoptes.Model
             }
         }
 
-        private static void UpdateProfitLoss(Result target, Result source)
+        private static void UpdateProfitLoss(QCResult target, QCResult source)
         {
             foreach (var x in source.ProfitLoss)
             {

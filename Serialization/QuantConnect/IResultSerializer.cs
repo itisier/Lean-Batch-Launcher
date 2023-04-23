@@ -7,13 +7,13 @@ namespace Panoptes.Model
 {
     public interface IResultSerializer
     {
-        Result Deserialize(string pathToResult);
+        QCResult Deserialize(string pathToResult);
 
-        Task<Result> DeserializeAsync(string pathToResult, CancellationToken cancellationToken);
+        Task<QCResult> DeserializeAsync(string pathToResult, CancellationToken cancellationToken);
 
-        string Serialize(Result result);
+        string Serialize(QCResult result);
 
-        Task<string> SerializeAsync(Result result, CancellationToken cancellationToken);
+        Task<string> SerializeAsync(QCResult result, CancellationToken cancellationToken);
 
         IAsyncEnumerable<(DateTime, string)> GetBacktestLogs(string pathToResult, CancellationToken cancellationToken);
     }

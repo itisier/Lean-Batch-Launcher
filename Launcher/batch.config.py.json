@@ -1,8 +1,8 @@
 {
-	"Algorithmlocation": "c:\\Projects\\QuantConnect\\Lean-Frode\\QuantConnect.Algorithm.FH\\bin\\Debug\\net5.0\\QuantConnect.Algorithm.CSharp.FH.dll",
-	"AlgorithmTypeName": "QuantConnect.Algorithm.CSharp.FH.BQBT_algorithm3_FASTBACKTEST",
-	"ConfigFile": "c:/Projects/QuantConnect/Lean-Frode/QuantConnect.Algorithm.FH/bin/Debug/net5.0/configb2020backtesting_FASTBACKTEST.json",
-	"AlgorithmLanguage": "CSharp",
+	"Algorithmlocation": "c:\\Projects\\QuantConnect\\BQBT\\BasicQuantBookTemplate2_algorithm3_FASTBACKTEST3.py",
+	"AlgorithmTypeName": "BasicQuantBookTemplate2_algorithm3_FASTBACKTEST3",
+	"ConfigFile": "c:\\Projects\\QuantConnect\\Lean-Frode\\QuantConnect.Brokerages.FH\\configb2020backtesting_FASTBACKTEST.json",
+	"AlgorithmLanguage": "Python",
 	"DataFolder": "c:\\Projects\\LeanData\\",
 	"ResultsDestinationFolder": "c:/Projects/testpython2/FASTBACKTEST/logs/",
 
@@ -29,7 +29,6 @@
 		1
 	],
 
-	/*
 	"Symbols": [
 		"ADE.OL",
 		"AFG.OL",
@@ -182,8 +181,7 @@
 		"YAR.OL",
 		"ZAL.OL"
 	],
-	*/
-	
+
 	"BatchIdsFile": "c:\\temp\\batchids.json",
 
 	"Parameters": {

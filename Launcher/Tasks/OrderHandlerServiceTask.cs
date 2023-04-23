@@ -128,7 +128,7 @@ namespace LeanBatchLauncher.Launcher.Tasks
             SetConsoleCtrlHandler(null, false);
 
             //var result = procToKill.CloseMainWindow();
-            if (procToKill.WaitForExit(15000) == false)
+            if (procToKill.WaitForExit(45000) == false)
                 throw new Exception($"Error waiting for process {procToKill.ProcessName} pid: {procToKill.Id} to exit");
             if (procToKill.ExitCode != 0) throw new Exception($"Exit code {procToKill.ExitCode} retuned from process to kill");
 
@@ -151,7 +151,7 @@ namespace LeanBatchLauncher.Launcher.Tasks
 
             };
 
-            ((Params_Algo3FastBackTest.Params)context).bors2020OrderHandlerServiceBaseUrl = $"http://localhost:{port}";
+            ((Params_Algo3FastBackTest.OptimizationParams)context).bors2020OrderHandlerServiceBaseUrl = $"http://localhost:{port}";
 
             // Create arguments
             var builder = new StringBuilder();

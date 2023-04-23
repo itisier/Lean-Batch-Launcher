@@ -115,7 +115,7 @@ namespace LeanBatchLauncher.Launcher
                 ProjectId = ProjectId,
                 Version = Globals.Version,
                 BacktestId = BacktestId, //AlgorithmTypeName + "-" + Guid.NewGuid(),
-                Language = Language.Python,
+                Language = (Language)Enum.Parse(typeof(Language), Config.Get("algorithm-language")),
                 Parameters = parameters,
                 Controls = controls,
             };

@@ -29,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Params_Algo3FastBackTest", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parameters", "Parameters\Parameters.csproj", "{17FED382-8B56-42D6-A970-8826BC4E9EEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization", "Serialization\Serialization.csproj", "{4A6C212D-9698-40EF-8CFF-35D2DFF8CF4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serialization", "Serialization\Serialization.csproj", "{4A6C212D-9698-40EF-8CFF-35D2DFF8CF4A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuantConnect.Algorithm.CSharp.FH", "..\Lean-Frode\QuantConnect.Algorithm.FH\QuantConnect.Algorithm.CSharp.FH.csproj", "{DEBE2A8B-B791-4A9C-A5D0-947666953D15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -470,6 +472,36 @@ Global
 		{4A6C212D-9698-40EF-8CFF-35D2DFF8CF4A}.Release|x64.Build.0 = Release|Any CPU
 		{4A6C212D-9698-40EF-8CFF-35D2DFF8CF4A}.Release|x86.ActiveCfg = Release|Any CPU
 		{4A6C212D-9698-40EF-8CFF-35D2DFF8CF4A}.Release|x86.Build.0 = Release|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.AlgorithmAndFHBrokerOnly|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.AlgorithmAndFHBrokerOnly|Any CPU.Build.0 = Debug|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.AlgorithmAndFHBrokerOnly|x64.ActiveCfg = Debug|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.AlgorithmAndFHBrokerOnly|x64.Build.0 = Debug|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.AlgorithmAndFHBrokerOnly|x86.ActiveCfg = Debug|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.AlgorithmAndFHBrokerOnly|x86.Build.0 = Debug|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.Backtesting_Parallel|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.Backtesting_Parallel|Any CPU.Build.0 = Debug|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.Backtesting_Parallel|x64.ActiveCfg = Debug|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.Backtesting_Parallel|x64.Build.0 = Debug|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.Backtesting_Parallel|x86.ActiveCfg = Debug|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.Backtesting_Parallel|x86.Build.0 = Debug|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.Debug|x64.Build.0 = Debug|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.Debug|x86.Build.0 = Debug|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.Mono|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.Mono|Any CPU.Build.0 = Debug|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.Mono|x64.ActiveCfg = Debug|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.Mono|x64.Build.0 = Debug|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.Mono|x86.ActiveCfg = Debug|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.Mono|x86.Build.0 = Debug|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.Release|x64.ActiveCfg = Release|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.Release|x64.Build.0 = Release|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.Release|x86.ActiveCfg = Release|Any CPU
+		{DEBE2A8B-B791-4A9C-A5D0-947666953D15}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

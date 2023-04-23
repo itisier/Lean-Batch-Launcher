@@ -27,7 +27,7 @@ namespace Panoptes.Model
             _options = DefaultJsonSerializerOptions.Default;
         }
 
-        public async Task<Result> DeserializeAsync(string pathToResult, CancellationToken cancellationToken)
+        public async Task<QCResult> DeserializeAsync(string pathToResult, CancellationToken cancellationToken)
         {
             _logger?.LogInformation("AdvancedResultSerializer.DeserializeAsync: Deserialization starting for {pathToResult}", pathToResult);
 
@@ -85,16 +85,16 @@ namespace Panoptes.Model
             }
         }
 
-        public Result Deserialize(string pathToResult)
+        public QCResult Deserialize(string pathToResult)
         {
             throw new NotImplementedException("AdvancedResultSerializer.Deserialize()");
         }
 
-        public string Serialize(Result result)
+        public string Serialize(QCResult result)
         {
             throw new NotImplementedException("AdvancedResultSerializer.Serialize()");
         }
-        public Task<string> SerializeAsync(Result result, CancellationToken cancellationToken)
+        public Task<string> SerializeAsync(QCResult result, CancellationToken cancellationToken)
         {
             throw new NotImplementedException("AdvancedResultSerializer.SerializeAsync()");
         }

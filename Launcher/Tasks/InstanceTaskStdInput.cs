@@ -8,6 +8,7 @@ using static CommandLineEncoder.Utils;
 using System.IO;
 using System.Diagnostics;
 using Newtonsoft.Json;
+using Parameters;
 
 namespace LeanBatchLauncher.Launcher.Tasks
 {
@@ -15,7 +16,7 @@ namespace LeanBatchLauncher.Launcher.Tasks
     {
         private record CompositeParameters(Configuration userConfiguration, object customParameters, string backTestId);
 
-        internal static string Start(Configuration userConfiguration, object parameters, Guid uniqueId)
+        internal static string Start(Configuration userConfiguration, IOptimizationParameters parameters, Guid uniqueId)
         {
             // Use ProcessStartInfo class.
             ProcessStartInfo startInfo = new ProcessStartInfo
@@ -24,7 +25,7 @@ namespace LeanBatchLauncher.Launcher.Tasks
                 UseShellExecute = false,
                 //FileName = Path.Combine("c:\\Projects\\QuantConnect\\Lean\\Launcher\\bin\\Debug\\", "Instance.exe"),
                 FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Instance.exe"),
-                //WorkingDirectory = "c:\\Projects\\QuantConnect\\Lean\\Launcher\\bin\\Debug\\",
+                //WorkingDirectory = "c:\\Projects\\QuantConnect\\Lean-Frode\\QuantConnect.Algorithm.FH\\bin\\Debug\\net5.0\\",
                 WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory,
                 RedirectStandardInput= true,
             };

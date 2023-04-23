@@ -1,5 +1,6 @@
 ﻿using ClosedXML.Excel;
 using Panoptes.Model;
+using Parameters;
 using QLNet;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,11 @@ namespace LeanBatchLauncher.Launcher.Export
             public ResultTypeFormatInfo(string key)
             {
                 NumberFormatType(key);
+            }
+            public ResultTypeFormatInfo(string key, Type typeOfOptParam)
+            {
+                type = typeOfOptParam;
+                SpecificType = SpecificTypeEnum.Regular;
             }
 
             public Type type { get; set; }
@@ -114,34 +120,48 @@ namespace LeanBatchLauncher.Launcher.Export
         }
 
 
-        public static void Export(IEnumerable<Result> results)
+        public static void Export(IEnumerable<(QCResult qcResult, IOptimizationParameters optimizationParameters)> results)
         {
             System.Data.DataTable dataTable = new System.Data.DataTable();
 
 
 
+            //COLUMN types
             Dictionary<string, ResultTypeFormatInfo> values = new();
-            foreach (var stat in results.Select(x => x.Statistics))
+            foreach (var result in results)
             {
-                foreach (var statKey in stat.Keys)
+                foreach (var statKey in result.qcResult.Statistics.Keys)
                 {
                     if (!values.ContainsKey(statKey))
                         values.Add(statKey, new ResultTypeFormatInfo(statKey));
                 }
+                foreach( var optimizationKey in result.optimizationParameters.Parameters)
+                {
+                    if (!values.ContainsKey(optimizationKey.paramName))
+                        values.Add(optimizationKey.paramName, new ResultTypeFormatInfo(optimizationKey.paramName, optimizationKey.type));
+                }
             }
 
 
+            //DataTable columns
             foreach (var stat in values)
                 dataTable.Columns.Add(stat.Key, stat.Value.type);
 
-            foreach (var stat in results.Select(x => x.Statistics))
+
+            //Rows
+            foreach (var result in results)
             {
                 var row = dataTable.NewRow();
-                foreach (var statKey in stat.Keys)
+                foreach (var statKey in result.qcResult.Statistics.Keys)
                 {
-                    //row[statKey] = FormatNumber(NumberFormatType(statKey), stat[statKey]);
-                    row[statKey] = values[statKey].FormatNumber(stat[statKey]);
+                    //row[statKey] = FormatNumber(NumberFormatType(statKey), result[statKey]);
+                    row[statKey] = values[statKey].FormatNumber(result.qcResult.Statistics[statKey]);
                 }
+                foreach(var optimizationKey in result.optimizationParameters.Parameters.ToList())
+                {
+                    row[optimizationKey.paramName] = optimizationKey.value ?? DBNull.Value;
+                }
+                
                 dataTable.Rows.Add(row);
             }
 
@@ -149,7 +169,7 @@ namespace LeanBatchLauncher.Launcher.Export
             var wb = new XLWorkbook();
             var ws = wb.Worksheets.Add("Results");
 
-            var algoPerformance = results.Select(x => x.Statistics);
+            var algoPerformance = results.Select(x => x.qcResult.Statistics);
 
             ws.Cell(1, 1).Value = "Results";
             ws.Range(1, 1, 1, 3).Merge().AddToNamed("Titles");

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Panoptes.Model
 {
-    public sealed class Result
+    public sealed class QCResult
     {
         public Dictionary<string, Charting.ChartDefinition> Charts = new Dictionary<string, Charting.ChartDefinition>();
 
@@ -36,7 +36,7 @@ namespace Panoptes.Model
 
         public ResultType ResultType { get; set; }
 
-        public void Add(Result result)
+        public void Add(QCResult result)
         {
             if (result == null) throw new ArgumentNullException(nameof(result));
 

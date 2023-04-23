@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <None Remove="batch.config.json" />
+    <None Remove="batch.config.py.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="batch.config.py.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="batch.config.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -22,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Lean-Frode\QuantConnect.Algorithm.FH\QuantConnect.Algorithm.CSharp.FH.csproj" />
     <ProjectReference Include="..\Instance\Instance.csproj" />
     <ProjectReference Include="..\Params_Algo3FastBackTest\Params_Algo3FastBackTest.csproj" />
     <ProjectReference Include="..\ProcCtrlC\ProcCtrlC.csproj" />

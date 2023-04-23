@@ -14,6 +14,8 @@ using QuantConnect.Packets;
 using Panoptes.Model;
 using System.Threading;
 using LeanBatchLauncher.Launcher.Export;
+using System.Collections.Concurrent;
+using Parameters;
 
 namespace LeanBatchLauncher.Launcher
 {
@@ -39,10 +41,10 @@ namespace LeanBatchLauncher.Launcher
             if (userConfiguration.AlphaModelNames.Length == 0)
                 userConfiguration.AlphaModelNames = new string[] { "COMPOSITE" };
 
-            // Generate ranges of parameters
+            // Generate ranges of optimizationParameters
             userConfiguration.PopulateParameterRanges();
 
-            // If no parameters are provided, we must give one
+            // If no optimizationParameters are provided, we must give one
             if (userConfiguration.ParameterRanges.Count == 0)
             {
                 userConfiguration.Parameters.Add("NA", new Parameter());
@@ -52,10 +54,10 @@ namespace LeanBatchLauncher.Launcher
             // Generate list of dates
             //userConfiguration.GenerateDates();
 
-            // We need to first store each instance context in order to then run a `Parallel.ForEach()` on all of them
-            var instanceContexts = new List<object>();
+            // We need to first store each instance optimizationParameters in order to then run a `Parallel.ForEach()` on all of them
+            var instanceContexts = new List<IOptimizationParameters>();
 
-            // Loop over start dates, alpha models + parameters, symbols, minute resolutions and eventually all parameter combinations
+            // Loop over start dates, alpha models + optimizationParameters, symbols, minute resolutions and eventually all parameter combinations
             //foreach ( var startDate in userConfiguration.Dates ) {
             /*foreach (string alphaModelName in userConfiguration.AlphaModelNames)
             {
@@ -70,7 +72,7 @@ namespace LeanBatchLauncher.Launcher
                             foreach (var parameter in parameterCombination)
                                 userConfiguration.Parameters[parameter.Key].Current = parameter.Value;
 
-                            // Store the instance context to be looped over later
+                            // Store the instance optimizationParameters to be looped over later
                             instanceContexts.Add(new InstanceContext()
                             {
                                 //StartDate = startDate < dataStartDateBySymbol[symbol] ? dataStartDateBySymbol[symbol] : startDate,
@@ -95,26 +97,25 @@ namespace LeanBatchLauncher.Launcher
 
             // Shuffle instances
             var rng = new Random();
-            instanceContexts = instanceContexts.OrderBy(r => rng.Next()).Take(2).ToList();
+            instanceContexts = instanceContexts.OrderBy(r => rng.Next()).Take(int.MaxValue).ToList();
 
             Console.WriteLine("Launching {0} threads at a time. Total of {1} backtests.", Math.Min(userConfiguration.ParallelProcesses, instanceContexts.Count), instanceContexts.Count);
 
             // Run each instance in parallel
-            var batchIds = new System.Collections.Concurrent.ConcurrentBag<string>();
+            var runInstances = new ConcurrentBag<(string batchId, IOptimizationParameters optimizationParameters)>();
             
 
             try
             {
-                Parallel.ForEach(instanceContexts, new ParallelOptions { MaxDegreeOfParallelism = userConfiguration.ParallelProcesses }, (context) =>
+                Parallel.ForEach(instanceContexts, new ParallelOptions { MaxDegreeOfParallelism = userConfiguration.ParallelProcesses }, (optimizationParameters) =>
                 {
-                    //InstanceTask.Start(userConfiguration, context);
-                    var oshTask = new OrderHandlerServiceTask();
-                    var ohsProcess = oshTask.Start(context);
+                    //var oshTask = new OrderHandlerServiceTask();
+                    //var ohsProcess = oshTask.Start(optimizationParameters);
                     
-                    var backtestId = InstanceTaskStdInput.Start(userConfiguration, context, Guid.NewGuid());
-                    batchIds.Add(backtestId);
-                    WriteBatchIdsFile(userConfiguration.BatchIdsFile, batchIds.ToList());
-                    oshTask.CtrlC(ohsProcess);
+                    var backtestId = InstanceTaskStdInput.Start(userConfiguration, optimizationParameters, Guid.NewGuid());
+                    runInstances.Add( (backtestId, optimizationParameters));
+                    //WriteBatchIdsFile(userConfiguration.BatchIdsFile, runInstances.ToList());
+                    //oshTask.CtrlC(ohsProcess);
                     Console.WriteLine($"Done with {backtestId}");
                 });
             }
@@ -127,12 +128,12 @@ namespace LeanBatchLauncher.Launcher
 
             
             IResultSerializer resultSerializer = new AdvancedResultSerializer(new ResultConverter(), null);
-            List<Result> resultList = new List<Result>();
-            foreach(var batchId in batchIds)
-            { 
-                Result batchResult = resultSerializer.DeserializeAsync($"{Path.Join(userConfiguration.ResultsDestinationFolder, batchId)}.json", new CancellationTokenSource().Token).Result;
-                resultList.Add(batchResult);
-            }
+            ConcurrentBag< (QCResult qcResult, IOptimizationParameters optimizationParameters)> resultList = new ();
+            foreach(var runInstance in runInstances )
+            {
+                QCResult batchResult = resultSerializer.DeserializeAsync($"{Path.Join(userConfiguration.ResultsDestinationFolder, runInstance.batchId)}.json", new CancellationTokenSource().Token).Result;
+                resultList.Add( (batchResult, runInstance.optimizationParameters));
+            };
             ExcelExport.Export(resultList);
 
 
@@ -159,7 +160,7 @@ namespace LeanBatchLauncher.Launcher
 
 
         /// <summary>
-        /// Contains one instance context to be passed into a backtest.
+        /// Contains one instance optimizationParameters to be passed into a backtest.
         /// </summary>
         public class InstanceContext
         {

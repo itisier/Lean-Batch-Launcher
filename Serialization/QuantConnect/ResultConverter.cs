@@ -17,9 +17,9 @@ namespace Panoptes.Model
          * This baseclass is 'Result' which remembers the actual result type, and has all possible fields to show in the UI
          */
 
-        public Result FromBacktestResult(BacktestResult backtestResult)
+        public QCResult FromBacktestResult(BacktestResult backtestResult)
         {
-            return new Result
+            return new QCResult
             {
                 ResultType = ResultType.Backtest,
                 Charts = new Dictionary<string, Charting.ChartDefinition>(backtestResult.Charts.MapToChartDefinitionDictionary()),
@@ -33,9 +33,9 @@ namespace Panoptes.Model
             };
         }
 
-        public Result FromLiveResult(LiveResult liveResult)
+        public QCResult FromLiveResult(LiveResult liveResult)
         {
-            return new Result
+            return new QCResult
             {
                 ResultType = ResultType.Live,
                 Charts = new Dictionary<string, Charting.ChartDefinition>(liveResult.Charts.MapToChartDefinitionDictionary() ?? new Dictionary<string, Charting.ChartDefinition>()),
@@ -52,7 +52,7 @@ namespace Panoptes.Model
             };
         }
 
-        public BacktestResult ToBacktestResult(Result result)
+        public BacktestResult ToBacktestResult(QCResult result)
         {
             if (result == null) throw new ArgumentNullException(nameof(result));
             if (result.ResultType != ResultType.Backtest) throw new ArgumentException("Result is not of type Backtest", nameof(result));
@@ -63,7 +63,7 @@ namespace Panoptes.Model
             return new BacktestResult(backtestResultParameters);
         }
 
-        public LiveResult ToLiveResult(Result result)
+        public LiveResult ToLiveResult(QCResult result)
         {
             if (result == null) throw new ArgumentNullException(nameof(result));
             if (result.ResultType != ResultType.Live) throw new ArgumentException("Result is not of type Live", nameof(result));

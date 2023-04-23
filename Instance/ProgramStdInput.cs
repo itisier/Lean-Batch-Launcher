@@ -57,7 +57,10 @@ namespace Instance
             var backTestId = (string)parameters["backTestId"];
             Log.Trace($"backTestId = {backTestId}");
 
-            //IDictionary<string, object> parametersKVP = new Dictionary<string, object>();
+            
+            
+            //For at dette skal fungere må launcher startes fra kommandolinje
+            //Debugger.Launch();
 
 
             // Initiate a thread safe operation, as it seems we need to do all of the below in a thread safe manner
@@ -67,7 +70,7 @@ namespace Instance
                 //File.Copy(Path.Combine("c:\\Projects\\QuantConnect\\Lean-Frode\\QuantConnect.Brokerages.FH\\", "configb2020backtesting_FASTBACKTEST.json"), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json"), true);
                 //Log.Trace($"ConfigFile = {userConfiguration["ConfigFile"]}");
                 //Log.Trace($"DestFile = {Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json")}");
-                File.Copy((string)userConfiguration["ConfigFile"], Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json"), true);
+                File.Copy((string)userConfiguration["ConfigFile"].ToString(), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json"), true);
 
                 Config.SetConfigurationFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json"));
                 //Config.Reset();
@@ -81,15 +84,16 @@ namespace Instance
 
 
                 // Configure path to and name of algorithm
-                Config.Set("algorithm-location", userConfiguration["Algorithmlocation"]);
-                Config.Set("algorithm-type-name", userConfiguration["AlgorithmTypeName"]);
+                Config.Set("algorithm-location", userConfiguration["Algorithmlocation"].ToString());
+                Config.Set("algorithm-type-name", userConfiguration["AlgorithmTypeName"].ToString());
                 Config.Set("BacktestId", backTestId);
-                Config.Set("data-folder", userConfiguration["DataFolder"]);
+                Config.Set("object-store-root", $"./storage/{backTestId}");
+                Config.Set("data-directory", userConfiguration["DataFolder"].ToString());
                 Config.Set("results-destination-folder", userConfiguration["ResultsDestinationFolder"]);
 
                 //Config.Set("plugin-directory", "c:\\Projects\\QuantConnect\\Lean-Batch-Launcher\\Launcher\\bin\\Debug");
                 // Set some values local to this Launcher
-                Config.Set("algorithm-language", "Python");
+                Config.Set("algorithm-language", userConfiguration["AlgorithmLanguage"].ToString());
                 Config.Set("composer-dll-directory", ".");
                 Config.Set("environment", "backtesting");
 
@@ -117,11 +121,6 @@ namespace Instance
 
 
 
-
-
-
-
-
                 // Deserialize parameters
                 /*var parameters = JsonConvert.DeserializeObject<Dictionary<string, Parameter>>(parametersSerialized);
 
@@ -136,10 +135,11 @@ namespace Instance
 
             Log.DebuggingEnabled = false;
 
+
+
             // We only need console output - no logging
             using (Log.LogHandler = new ConsoleLogHandler())
             {
-
                 //AppDomain.CurrentDomain.SetData("APPBASE", "c:\\Projects\\QuantConnect\\Lean\\Launcher\\bin\\Debug\\");
 
                 Log.Trace("Engine.Main(): LEAN ALGORITHMIC TRADING ENGINE v" + Globals.Version + " Mode: *CUSTOM BATCH* (" + (Environment.Is64BitProcess ? "64" : "32") + "bit)");

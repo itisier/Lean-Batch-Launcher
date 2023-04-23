@@ -4,10 +4,10 @@ namespace Panoptes.Model
 {
     public interface IResultConverter
     {
-        Result FromBacktestResult(BacktestResult backtestResult);
-        Result FromLiveResult(LiveResult liveResult);
+        QCResult FromBacktestResult(BacktestResult backtestResult);
+        QCResult FromLiveResult(LiveResult liveResult);
 
-        BacktestResult ToBacktestResult(Result result);
-        LiveResult ToLiveResult(Result result);
+        BacktestResult ToBacktestResult(QCResult result);
+        LiveResult ToLiveResult(QCResult result);
     }
 }
