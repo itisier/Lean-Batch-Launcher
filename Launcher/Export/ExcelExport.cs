@@ -22,7 +22,18 @@ namespace LeanBatchLauncher.Launcher.Export
             }
             public ResultTypeFormatInfo(string key, Type typeOfOptParam)
             {
-                type = typeOfOptParam;
+                //Konverter nullables til ikke-nullables (DataTable støtter ikke nullables)
+                if (typeOfOptParam == typeof(TimeSpan?))
+                    type = typeof(TimeSpan);
+                else if (typeOfOptParam == typeof(DateTime?))
+                    type = typeof(DateTime);
+                else if (typeOfOptParam == typeof(decimal?))
+                    type = typeof(decimal);
+                else if (typeOfOptParam == typeof(int?))
+                    type = typeof(int);
+                else
+                    type = typeOfOptParam;
+
                 SpecificType = SpecificTypeEnum.Regular;
             }
 
@@ -35,7 +46,7 @@ namespace LeanBatchLauncher.Launcher.Export
             }
             public SpecificTypeEnum SpecificType{ get; set; }
 
-            public object FormatNumber(string value)
+            public object FormatValue(string value)
             {
                 if (SpecificType == SpecificTypeEnum.Percent)
                 {
@@ -73,10 +84,15 @@ namespace LeanBatchLauncher.Launcher.Export
                     return value;
             }
 
+
+
             private void NumberFormatType(string key)
             {
                 switch (key)
                 {
+                    case BATCHIDKEY:
+                        type = typeof(string);
+                        SpecificType = SpecificTypeEnum.Regular; break;
                     case "Total Trades":
                         type = typeof(int);
                         SpecificType = SpecificTypeEnum.Regular;
@@ -118,16 +134,19 @@ namespace LeanBatchLauncher.Launcher.Export
             }
 
         }
+        private const string BATCHIDKEY = "batchId";
 
-
-        public static void Export(IEnumerable<(QCResult qcResult, IOptimizationParameters optimizationParameters)> results)
+        public static void Export(IEnumerable<(QCResult qcResult, IOptimizationParameters optimizationParameters, string batchId)> results)
         {
             System.Data.DataTable dataTable = new System.Data.DataTable();
 
 
 
+
+
             //COLUMN types
             Dictionary<string, ResultTypeFormatInfo> values = new();
+            values.Add(BATCHIDKEY, new ResultTypeFormatInfo(BATCHIDKEY, typeof(string)));
             foreach (var result in results)
             {
                 foreach (var statKey in result.qcResult.Statistics.Keys)
@@ -152,11 +171,17 @@ namespace LeanBatchLauncher.Launcher.Export
             foreach (var result in results)
             {
                 var row = dataTable.NewRow();
+                //BatchId
+                row[BATCHIDKEY] = result.batchId;
+
+                //QC stats
                 foreach (var statKey in result.qcResult.Statistics.Keys)
                 {
-                    //row[statKey] = FormatNumber(NumberFormatType(statKey), result[statKey]);
-                    row[statKey] = values[statKey].FormatNumber(result.qcResult.Statistics[statKey]);
+                    //row[statKey] = FormatValue(NumberFormatType(statKey), result[statKey]);
+                    row[statKey] = values[statKey].FormatValue(result.qcResult.Statistics[statKey]);
                 }
+                
+                //Optimization parameters
                 foreach(var optimizationKey in result.optimizationParameters.Parameters.ToList())
                 {
                     row[optimizationKey.paramName] = optimizationKey.value ?? DBNull.Value;

@@ -103,7 +103,6 @@ namespace LeanBatchLauncher.Launcher
 
             // Run each instance in parallel
             var runInstances = new ConcurrentBag<(string batchId, IOptimizationParameters optimizationParameters)>();
-            
 
             try
             {
@@ -111,8 +110,8 @@ namespace LeanBatchLauncher.Launcher
                 {
                     //var oshTask = new OrderHandlerServiceTask();
                     //var ohsProcess = oshTask.Start(optimizationParameters);
-                    
-                    var backtestId = InstanceTaskStdInput.Start(userConfiguration, optimizationParameters, Guid.NewGuid());
+                    InstanceTaskStdInput instance = new InstanceTaskStdInput();
+                    string backtestId = instance.Start(userConfiguration, optimizationParameters, Guid.NewGuid());
                     runInstances.Add( (backtestId, optimizationParameters));
                     //WriteBatchIdsFile(userConfiguration.BatchIdsFile, runInstances.ToList());
                     //oshTask.CtrlC(ohsProcess);
@@ -128,12 +127,12 @@ namespace LeanBatchLauncher.Launcher
 
             
             IResultSerializer resultSerializer = new AdvancedResultSerializer(new ResultConverter(), null);
-            ConcurrentBag< (QCResult qcResult, IOptimizationParameters optimizationParameters)> resultList = new ();
+            ConcurrentBag< (QCResult qcResult, IOptimizationParameters optimizationParameters, string batchId)> resultList = new ();
             foreach(var runInstance in runInstances )
             {
                 QCResult batchResult = resultSerializer.DeserializeAsync($"{Path.Join(userConfiguration.ResultsDestinationFolder, runInstance.batchId)}.json", new CancellationTokenSource().Token).Result;
-                resultList.Add( (batchResult, runInstance.optimizationParameters));
-            };
+                resultList.Add((batchResult, runInstance.optimizationParameters, runInstance.batchId));
+            }
             ExcelExport.Export(resultList);
 
 
@@ -145,7 +144,6 @@ namespace LeanBatchLauncher.Launcher
             Console.WriteLine("Waiting for key press...");
             Console.Read();
             Environment.Exit(0);
-
         }
 
 

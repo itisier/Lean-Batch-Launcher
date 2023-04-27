@@ -22,6 +22,8 @@ namespace Params_Algo3FastBackTest
         public int[] backtestStartDate { get; set; }
         public int[] backtestEndDate { get; set; }
 
+        public bool debugOutputSignals => false;
+
         public string signalFile { get; set; } = "c:/temp/testdftrain.json";
 
         [JsonIgnore] 
@@ -30,15 +32,15 @@ namespace Params_Algo3FastBackTest
         [JsonIgnore] 
         public IEnumerable<(string paramName,Type type, object value, string strValue)> Parameters { get {
 
-                yield return ("ProfitLoss.TimeInForceTimeSpanEntry", typeof(TimeSpan), OrderDefinition_DTO.ConcreteOrderDefinitions.ProfitLoss?.TimeInForceTimeSpanEntry, OrderDefinition_DTO.ConcreteOrderDefinitions.ProfitLoss?.TimeInForceTimeSpanEntry.ToString() ?? "");
-                yield return ("ProfitLoss.TimeInForceTimeSpanProfit", typeof(TimeSpan), OrderDefinition_DTO.ConcreteOrderDefinitions.ProfitLoss?.TimeInForceTimeSpanProfit, OrderDefinition_DTO.ConcreteOrderDefinitions.ProfitLoss?.TimeInForceTimeSpanProfit.ToString() ?? "");
-                yield return ("ProfitLoss.FixedAmountToBuy", typeof(decimal), OrderDefinition_DTO.ConcreteOrderDefinitions.ProfitLoss?.FixedAmountToBuy, OrderDefinition_DTO.ConcreteOrderDefinitions.ProfitLoss?.FixedAmountToBuy.ToString());
-                yield return ("ProfitLoss.ProfitPct", typeof(decimal), OrderDefinition_DTO.ConcreteOrderDefinitions.ProfitLoss?.ProfitPct, OrderDefinition_DTO.ConcreteOrderDefinitions.ProfitLoss?.ProfitPct.ToString(CultureInfo.InvariantCulture));
-                yield return ("ProfitLoss.SLPct", typeof(decimal), OrderDefinition_DTO.ConcreteOrderDefinitions.ProfitLoss?.SLPct, OrderDefinition_DTO.ConcreteOrderDefinitions.ProfitLoss?.SLPct.ToString(CultureInfo.InvariantCulture));
-                yield return ("BacktestStartDate", typeof(int[]), backtestStartDate, backtestStartDate.ToString());
-                yield return ("BacktestEndDate", typeof(int[]), backtestEndDate, backtestEndDate.ToString());
-                yield return ("MaxOrdersInPeriod?.MaxOrders", typeof(int), OrderDefinition_DTO.MaxOrdersInPeriod?.MaxOrders, OrderDefinition_DTO.MaxOrdersInPeriod?.MaxOrders.ToString());
-                yield return ("MaxOrdersInPeriod?.Period", typeof(TimeSpan), OrderDefinition_DTO.MaxOrdersInPeriod?.Period, OrderDefinition_DTO.MaxOrdersInPeriod?.Period.ToString());
+                yield return ("ProfitLoss.TimeInForceTimeSpanEntry", typeof(TimeSpan?), OrderDefinition_DTO.ConcreteOrderDefinitions.ProfitLoss?.TimeInForceTimeSpanEntry, OrderDefinition_DTO.ConcreteOrderDefinitions.ProfitLoss?.TimeInForceTimeSpanEntry.ToString() ?? "");
+                yield return ("ProfitLoss.TimeInForceTimeSpanProfit", typeof(TimeSpan?), OrderDefinition_DTO.ConcreteOrderDefinitions.ProfitLoss?.TimeInForceTimeSpanProfit, OrderDefinition_DTO.ConcreteOrderDefinitions.ProfitLoss?.TimeInForceTimeSpanProfit.ToString() ?? "");
+                yield return ("ProfitLoss.FixedAmountToBuy", typeof(decimal?), OrderDefinition_DTO.ConcreteOrderDefinitions.ProfitLoss?.FixedAmountToBuy, OrderDefinition_DTO.ConcreteOrderDefinitions.ProfitLoss?.FixedAmountToBuy.ToString());
+                yield return ("ProfitLoss.ProfitPct", typeof(decimal?), OrderDefinition_DTO.ConcreteOrderDefinitions.ProfitLoss?.ProfitPct, OrderDefinition_DTO.ConcreteOrderDefinitions.ProfitLoss?.ProfitPct.ToString(CultureInfo.InvariantCulture));
+                yield return ("ProfitLoss.SLPct", typeof(decimal?), OrderDefinition_DTO.ConcreteOrderDefinitions.ProfitLoss?.SLPct, OrderDefinition_DTO.ConcreteOrderDefinitions.ProfitLoss?.SLPct.ToString(CultureInfo.InvariantCulture));
+                yield return ("BacktestStartDate", typeof(DateTime), new DateTime(backtestStartDate[0], backtestStartDate[1], backtestStartDate[2]), backtestStartDate.ToString());
+                yield return ("BacktestEndDate", typeof(DateTime), new DateTime(backtestEndDate[0], backtestEndDate[1], backtestEndDate[2]), backtestEndDate.ToString());
+                yield return ("MaxOrdersInPeriod?.MaxOrders", typeof(int?), OrderDefinition_DTO.MaxOrdersInPeriod?.MaxOrders, OrderDefinition_DTO.MaxOrdersInPeriod?.MaxOrders.ToString());
+                yield return ("MaxOrdersInPeriod?.Period", typeof(TimeSpan?), OrderDefinition_DTO.MaxOrdersInPeriod?.Period, OrderDefinition_DTO.MaxOrdersInPeriod?.Period.ToString());
 
 
                 yield return ("MLCluster", typeof(int), OrderDefinition_DTO.MLCluster, OrderDefinition_DTO.MLCluster.ToString());

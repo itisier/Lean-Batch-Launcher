@@ -16,7 +16,7 @@ namespace LeanBatchLauncher.Launcher.Tasks
     {
         private record CompositeParameters(Configuration userConfiguration, object customParameters, string backTestId);
 
-        internal static string Start(Configuration userConfiguration, IOptimizationParameters parameters, Guid uniqueId)
+        internal string Start(Configuration userConfiguration, IOptimizationParameters parameters, Guid uniqueId)
         {
             // Use ProcessStartInfo class.
             ProcessStartInfo startInfo = new ProcessStartInfo
