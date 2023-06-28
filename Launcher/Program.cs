@@ -88,7 +88,9 @@ namespace LeanBatchLauncher.Launcher
                     }
                 }
             }*/
-            foreach(var parameter in Params_Algo3FastBackTest.Combinator.GetCombinations("test", 399, 3078, 22, userConfiguration))
+            //foreach(var parameter in Params_Algo3FastBackTest.Combinator.GetCombinations("test", 499, 3078, 222, "c:\\Projects\\QuantConnect\\BQBT\\BQBT\\BQBT_MakeModel_Cluster_Agglomerate_Results\\499\\3000-3099\\3078\\cluster222_predictedFromTrain.json", userConfiguration))
+            //foreach (var parameter in Params_Algo3FastBackTest.Combinator.GetCombinations("test", 501, 5212, 5, "c:\\Projects\\QuantConnect\\BQBT\\BQBT\\BQBT_MakeModel_Cluster_Agglomerate_Results\\501\\5200-5299\\5212\\cluster5_predictedFromTrain.json", userConfiguration))
+            foreach (var parameter in Params_Algo3FastBackTest.Combinator.GetCombinations("test", 501, 1771, 85, "c:\\Projects\\QuantConnect\\BQBT\\BQBT\\BQBT_MakeModel_Cluster_Agglomerate_Results\\501\\1700-1799\\1771\\cluster85_predictedFromcustom.json", userConfiguration))
             {
                 instanceContexts.Add(parameter);
 

@@ -15,7 +15,7 @@ namespace Params_Algo3FastBackTest
     {
 
 
-        public static IEnumerable<OptimizationParams> GetCombinations(string name, int MLSessionId, int MLIterationId, int MLCluster, Configuration userConfiguration)
+        public static IEnumerable<OptimizationParams> GetCombinations(string name, int MLSessionId, int MLIterationId, int MLCluster, string signalFile, Configuration userConfiguration)
         {
             
             foreach(var timeinForceEntryMinute in new FixedValueParameter<int?>(null, 1, 5, 60, 470).Values)
@@ -32,7 +32,7 @@ namespace Params_Algo3FastBackTest
 
                         result.backtestStartDate = new int[]{userConfiguration.StartDate.Year, userConfiguration.StartDate.Month, userConfiguration.StartDate.Day};
                         result.backtestEndDate = new int[] {userConfiguration.EndDate.Year,userConfiguration.EndDate.Month, userConfiguration.EndDate.Day};
-
+                        result.signalFile = signalFile;
 
                         yield return result;
                     }

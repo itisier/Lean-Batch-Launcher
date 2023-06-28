@@ -24,7 +24,7 @@ namespace Params_Algo3FastBackTest
 
         public bool debugOutputSignals => false;
 
-        public string signalFile { get; set; } = "c:/temp/testdftrain.json";
+        public string signalFile { get; set; }
 
         [JsonIgnore] 
         public OrderDefinition_DTO OrderDefinition_DTO { get; set; }

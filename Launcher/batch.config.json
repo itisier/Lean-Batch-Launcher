@@ -12,12 +12,18 @@
 
 	"ParallelProcesses": 12,
 
+	/*
 	"StartDate": "2021-02-03",
-
-	"EndDate": "2021-02-3",
+	//"EndDate": "2021-02-3",
 	//"EndDate": "2021-02-9",
 	//"EndDate": "2021-03-3",
-	//"EndDate": "2021-03-23",
+	"EndDate": "2021-03-23",
+	*/
+	/*"StartDate": "2021-08-05",
+	"EndDate": "2021-08-25",*/
+	"StartDate": "2023-03-20",
+	"EndDate": "2023-04-21",
+
 
 	//"Duration": 12,
 
@@ -183,7 +189,7 @@
 		"ZAL.OL"
 	],
 	*/
-	
+
 	"BatchIdsFile": "c:\\temp\\batchids.json",
 
 	"Parameters": {
